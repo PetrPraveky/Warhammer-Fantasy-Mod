@@ -1,0 +1,18 @@
+{
+    "parent": "item/handheld",
+    "textures": {
+        "layer0": "wh:item/netherite_spear"
+    },
+    "display": {
+        "thirdperson_righthand": {
+            "rotation": [0, 270, 55],
+            "translation": [0, 0, 1.75],
+            "scale": [1.75, 1.75, 1]
+        },
+        "thirdperson_lefthand": {
+            "rotation": [0, 90, 305],
+            "translation": [0, 0, 1.75],
+            "scale": [1.75, 1.75, 1]
+        }
+    }
+}

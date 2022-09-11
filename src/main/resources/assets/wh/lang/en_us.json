@@ -1,0 +1,30 @@
+{
+    "item.wh.warpstone": "Warpstone",
+
+    "item.wh.wooden_dagger": "Wooden Dagger",
+    "item.wh.stone_dagger": "Stone Dagger",
+    "item.wh.iron_dagger": "Iron Dagger",
+    "item.wh.golden_dagger": "Golden Dagger",
+    "item.wh.diamond_dagger": "Diamond Dagger",
+    "item.wh.netherite_dagger": "Nehterite Dagger",
+
+    "item.wh.wooden_spear": "Wooden spear",
+    "item.wh.stone_spear": "Stone spear",
+    "item.wh.iron_spear": "Iron spear",
+    "item.wh.golden_spear": "Golden spear",
+    "item.wh.diamond_spear": "Diamond spear",
+    "item.wh.netherite_spear": "Nehterite spear",
+
+    "item.wh.wooden_warhammer": "Two-handed Wooden Warhammer",
+    "item.wh.stone_warhammer": "Two-handed Stone Warhammer",
+    "item.wh.iron_warhammer": "Two-handed Iron Warhammer",
+    "item.wh.golden_warhammer": "Two-handed Golden Warhammer",
+    "item.wh.diamond_warhammer": "Two-handed Diamond Warhammer",
+    "item.wh.netherite_warhammer": "Two-handed Netherite Warhammer",
+
+    "block.wh.warpstone_block": "Block of Warpstone",
+    "block.wh.warpstone_ore": "Warpstone Ore",
+    "block.wh.deepslate_warpstone_ore": "Deepslate Warpstone Ore",
+
+    "itemGroup.ore_tab": "Warhammer Ores"
+}
