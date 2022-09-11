@@ -75,11 +75,8 @@ public class Dagger extends TieredItem {
         Vec3 eyeVec = entity.getEyePosition(1.0F);
         Vec3 targetVec = eyeVec.add(viewVec.x * reach, viewVec.y * reach, viewVec.z * reach);
 
-        //Expanding the attacker's bounding box by the view vector's scale, and inflating it by 4.0D (x, y, z)
         AABB viewBB = entity.getBoundingBox().expandTowards(viewVec.scale(reach)).inflate(4.0D, 4.0D, 4.0D);
         EntityHitResult result = ProjectileUtil.getEntityHitResult(world, entity, eyeVec, targetVec, viewBB, EntitySelector.NO_CREATIVE_OR_SPECTATOR);
-
-        System.out.println(result);
 
         if (result == null || !(result.getEntity() instanceof LivingEntity)) return false;
 
@@ -93,11 +90,11 @@ public class Dagger extends TieredItem {
         System.out.println(reachSqr);
         System.out.println(distanceToTargetSqr);
 
+        // Custom attack with lowered reach
         if (hitResult) {
             if (entity instanceof Player) {
                 if (reachSqr >= distanceToTargetSqr) {
-                    target.hurt(DamageSource.playerAttack((Player) entity), this.attackDamage);
-                    //Do stuff
+                    target.hurt(DamageSource.playerAttack((Player) entity), this.attackDamage+1);
                 }
             }
         }

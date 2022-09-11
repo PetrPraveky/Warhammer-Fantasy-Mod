@@ -17,13 +17,15 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.pravekypetr.wh.attributes.ModWeaponAttribute;
 import net.pravekypetr.wh.networking.ModMessages;
 import net.pravekypetr.wh.networking.packet.HammerSlamC2S;
 
 public class Warhammer extends TieredItem {
     private final float attackDamage;
     private final float attackSpeed;
-    public final float aoeDamage;
+    private final float aoeDamage;
+    private final float aoeRadius;
     // public static float aoeDamage;
 
     private Multimap<Attribute, AttributeModifier> map;
@@ -33,10 +35,12 @@ public class Warhammer extends TieredItem {
         this.attackDamage = (float)dmg+tier.getAttackDamageBonus();
         this.attackSpeed = speed;
         this.aoeDamage = this.attackDamage*0.6f;
+        this.aoeRadius = 2;
 
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", this.attackDamage, AttributeModifier.Operation.ADDITION));
         builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", this.attackSpeed, AttributeModifier.Operation.ADDITION));
+        builder.put(ModWeaponAttribute.AOE_RADIUS.get(), new AttributeModifier(ModWeaponAttribute.AOE_RADIUS_MODIFIER, "Weapon modifier", this.aoeRadius, AttributeModifier.Operation.ADDITION));
         //Checking if the Forge 'Reach' Attribute is present
         /*if (ForgeMod.REACH_DISTANCE.isPresent()) {
             builder.put(ForgeMod.REACH_DISTANCE.get(), new AttributeModifier(ATTACK_REACH_MODIFIER, "Weapon modifier", this.reach, AttributeModifier.Operation.ADDITION));

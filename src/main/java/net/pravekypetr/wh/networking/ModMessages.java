@@ -8,7 +8,6 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 import net.pravekypetr.wh.WH;
 import net.pravekypetr.wh.networking.packet.HammerSlamC2S;
-import net.pravekypetr.wh.networking.packet.SpearAttackC2S;
 
 public class ModMessages {
     private static SimpleChannel INSTANCE;
@@ -32,12 +31,6 @@ public class ModMessages {
             .decoder(HammerSlamC2S::new)
             .encoder(HammerSlamC2S::toBytes)
             .consumerMainThread(HammerSlamC2S::handle)
-            .add();
-
-        net.messageBuilder(SpearAttackC2S.class, id(), NetworkDirection.PLAY_TO_SERVER)
-            .decoder(SpearAttackC2S::new)
-            .encoder(SpearAttackC2S::toBytes)
-            .consumerMainThread(SpearAttackC2S::handle)
             .add();
     }
 

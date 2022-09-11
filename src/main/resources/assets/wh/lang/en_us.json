@@ -26,5 +26,7 @@
     "block.wh.warpstone_ore": "Warpstone Ore",
     "block.wh.deepslate_warpstone_ore": "Deepslate Warpstone Ore",
 
-    "itemGroup.ore_tab": "Warhammer Ores"
+    "itemGroup.ore_tab": "Warhammer Ores",
+
+    "attribute.aoe_radius": "Radius of AoE Damage"
 }

@@ -28,10 +28,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.event.entity.player.AttackEntityEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.pravekypetr.wh.networking.ModMessages;
-import net.pravekypetr.wh.networking.packet.SpearAttackC2S;
 
 public class Spear extends TieredItem {
     private final float attackDamage;
@@ -45,7 +41,7 @@ public class Spear extends TieredItem {
     public Spear(Tier tier, int dmg, float speed, Item.Properties properties) {
         super(tier, properties);
         this.attackDamage = (float)dmg+tier.getAttackDamageBonus();
-        this.reach = 3;
+        this.reach = 3.5f;
         this.attackSpeed = speed;
 
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
@@ -71,7 +67,6 @@ public class Spear extends TieredItem {
     //This also works on blocks btw
     @Override
     public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
-        // ModMessages.sendToServer(new SpearAttackC2S());
         double reach = entity.getAttributeValue(ForgeMod.REACH_DISTANCE.get());
         double reachSqr = reach * reach;
         Level world = entity.level;
@@ -92,11 +87,11 @@ public class Spear extends TieredItem {
 
         boolean hitResult = (result != null ? target : null) != null;
 
+        // Custom attack with extender reach
         if (hitResult) {
             if (entity instanceof Player) {
                 if (reachSqr >= distanceToTargetSqr) {
-                    target.hurt(DamageSource.playerAttack((Player) entity), this.attackDamage);
-                    //Do stuff
+                    target.hurt(DamageSource.playerAttack((Player) entity), this.attackDamage+1);
                 }
             }
         }
