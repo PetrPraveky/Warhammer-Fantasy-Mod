@@ -14,6 +14,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.network.NetworkEvent;
 import net.pravekypetr.wh.damageSource.ModDamageSource;
+import net.pravekypetr.wh.itemInit.Warhammer;
 
 public class HammerSlamC2S {
     public HammerSlamC2S() {
@@ -47,7 +48,9 @@ public class HammerSlamC2S {
                     for(AttributeModifier modifier : player.getMainHandItem().getAttributeModifiers(EquipmentSlot.MAINHAND).get(Attributes.ATTACK_DAMAGE)) {
                         damage += modifier.getAmount();
                     }
-                    damage *= 0.6f;
+                    Warhammer weapon = (Warhammer)player.getMainHandItem().getItem();
+                    damage *= (1f-weapon.reduction);
+                    System.out.println(damage);
                     // Damage entity
                     livingEntity.hurt(ModDamageSource.HAMMERED, damage);
                 } catch (Exception e) {}

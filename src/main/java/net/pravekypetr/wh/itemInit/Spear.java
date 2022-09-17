@@ -1,12 +1,18 @@
 package net.pravekypetr.wh.itemInit;
 
+import java.util.List;
 import java.util.UUID;
+
+import javax.annotation.Nullable;
 
 import com.google.common.collect.Multimap;
 import com.google.common.collect.ImmutableMultimap;
 
 import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -22,6 +28,7 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TieredItem;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -30,9 +37,9 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 
 public class Spear extends TieredItem {
-    private final float attackDamage;
-    private final float reach;
-    private final float attackSpeed;
+    public final float attackDamage;
+    public final float reach;
+    public final float attackSpeed;
 
     protected static final UUID ATTACK_REACH_MODIFIER = UUID.fromString("2f8f916c-bf09-11ec-9d64-0242ac120002");
 
@@ -54,6 +61,17 @@ public class Spear extends TieredItem {
         map = builder.build();
     }
 
+    // Hover tooltip
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
+        if (Screen.hasShiftDown()) {
+            components.add(Component.translatable("wh.spear.info").withStyle(ChatFormatting.AQUA));
+        } else {
+            components.add(Component.translatable("wh.info").withStyle(ChatFormatting.YELLOW));
+        }
+        super.appendHoverText(stack, level, components, flag);
+    }
+    
     @Override
     public boolean canAttackBlock(BlockState p_43291_, Level p_43292_, BlockPos p_43293_, Player p_43294_) {
         return !p_43294_.isCreative();

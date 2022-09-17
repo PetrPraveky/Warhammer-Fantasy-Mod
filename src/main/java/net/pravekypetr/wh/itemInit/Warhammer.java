@@ -1,9 +1,16 @@
 package net.pravekypetr.wh.itemInit;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -15,6 +22,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TieredItem;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.pravekypetr.wh.attributes.ModWeaponAttribute;
@@ -22,10 +30,12 @@ import net.pravekypetr.wh.networking.ModMessages;
 import net.pravekypetr.wh.networking.packet.HammerSlamC2S;
 
 public class Warhammer extends TieredItem {
-    private final float attackDamage;
-    private final float attackSpeed;
-    private final float aoeDamage;
-    private final float aoeRadius;
+    public final float attackDamage;
+    public final float attackSpeed;
+    public final float aoeDamage;
+    public final float aoeRadius;
+    public final float cooldown;
+    public final float reduction;
     // public static float aoeDamage;
 
     private Multimap<Attribute, AttributeModifier> map;
@@ -34,18 +44,30 @@ public class Warhammer extends TieredItem {
         super(tier, properties);
         this.attackDamage = (float)dmg+tier.getAttackDamageBonus();
         this.attackSpeed = speed;
-        this.aoeDamage = this.attackDamage*0.6f;
         this.aoeRadius = 2;
+        this.cooldown = 40;
+        this.reduction = 0.4f;
+        this.aoeDamage = (this.attackDamage+1)*(1f-this.reduction);
 
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", this.attackDamage, AttributeModifier.Operation.ADDITION));
         builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", this.attackSpeed, AttributeModifier.Operation.ADDITION));
         builder.put(ModWeaponAttribute.AOE_RADIUS.get(), new AttributeModifier(ModWeaponAttribute.AOE_RADIUS_MODIFIER, "Weapon modifier", this.aoeRadius, AttributeModifier.Operation.ADDITION));
+        builder.put(ModWeaponAttribute.AOE_DAMAGE.get(), new AttributeModifier(ModWeaponAttribute.AOE_DAMAGE_MODIFIER, "Weapon modifier", this.aoeDamage, AttributeModifier.Operation.ADDITION));
+        builder.put(ModWeaponAttribute.SPEACIAL_COOLDOWN.get(), new AttributeModifier(ModWeaponAttribute.SPECIAL_COOLDOWN_MODIFIER, "Weapon modifier", this.cooldown/20, AttributeModifier.Operation.ADDITION));
         //Checking if the Forge 'Reach' Attribute is present
-        /*if (ForgeMod.REACH_DISTANCE.isPresent()) {
-            builder.put(ForgeMod.REACH_DISTANCE.get(), new AttributeModifier(ATTACK_REACH_MODIFIER, "Weapon modifier", this.reach, AttributeModifier.Operation.ADDITION));
-        }*/
         map = builder.build();
+    }
+
+    // Hover tooltip
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
+        if (Screen.hasShiftDown()) {
+            components.add(Component.translatable("wh.warhammer.info").withStyle(ChatFormatting.AQUA));
+        } else {
+            components.add(Component.translatable("wh.info").withStyle(ChatFormatting.YELLOW));
+        }
+        super.appendHoverText(stack, level, components, flag);
     }
 
     @Override
@@ -60,16 +82,9 @@ public class Warhammer extends TieredItem {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
-        if (world.isClientSide()) {
+        if (!world.isClientSide()) {
             ModMessages.sendToServer(new HammerSlamC2S());
-            /*List<Entity> entityList = world.getEntities(player, AABB.ofSize(player.position(), 4, 2, 4));
-            for (Entity entity : entityList) {
-                System.out.println(entity);
-                LivingEntity livingEntity = (LivingEntity) entity;
-                // livingEntity.hurt(ModDamageSource.HAMMERED, this.aoeDamage);
-                // LivingHurtEvent(livingEntity, ModDamageSource.HAMMERED, this.aoeDamage);
-            }*/
-            player.getCooldowns().addCooldown(this, 40);
+            player.getCooldowns().addCooldown(this, (int)this.cooldown);
         }
         return super.use(world, player, hand);
     }

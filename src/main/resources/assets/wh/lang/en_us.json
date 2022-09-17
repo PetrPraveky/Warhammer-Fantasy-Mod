@@ -28,5 +28,14 @@
 
     "itemGroup.ore_tab": "Warhammer Ores",
 
-    "attribute.aoe_radius": "Radius of AoE Damage"
+    "attribute.aoe.radius": "Radius of AoE Damage",
+    "attribute.aoe.damage": "AoE Damage Reduction",
+    "attribute.special.cooldown": "Ability Cooldown",
+    "attirubte.add.damage": "Additional Damage",
+
+    "wh.info": "Press SHIFT for more info",
+
+    "wh.warhammer.info": "\n- With right click, you can deal AoE attack \n   in range of 2 blocks around you. \n- Damage of this attack is 60% of normal attack and \n   you can do it only once every 2 seconds\n",
+    "wh.dagger.info": "\n- Dagger weapons have decreased attack range. \n- But to compensate this, if you hold it in your off-hand, \n   you can deal more damage with sword-type items \n   like sword, rapier, etc. \n- Also if you right click you deal additional damage. \n- If you dont hold sword in your main hand, \n   when rightclicked, you can throw the dagger.\n",
+    "wh.spear.info": "\n- Spear weapons have increased attack range. \n- You can also throw it with right click, but be warned, \n   it will decrease durability of spear by large amount.\n"
 }
