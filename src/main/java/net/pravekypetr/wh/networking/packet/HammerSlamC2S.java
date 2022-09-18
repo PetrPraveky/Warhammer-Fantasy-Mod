@@ -7,10 +7,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.network.NetworkEvent;
 import net.pravekypetr.wh.damageSource.ModDamageSource;
@@ -36,25 +33,17 @@ public class HammerSlamC2S {
         context.enqueueWork(() -> {
             ServerPlayer player = context.getSender();
             ServerLevel level = player.getLevel();
-
-            List<Entity> entityList = level.getEntities(player, AABB.ofSize(player.position(), 4, 2, 4));
-            // System.out.println(entityList);
-            for (Entity entity : entityList) {
-                try {
-                    // Filter out non living entities
-                    LivingEntity livingEntity = (LivingEntity)entity;
-                    // Damage get
-                    float damage = 1;
-                    for(AttributeModifier modifier : player.getMainHandItem().getAttributeModifiers(EquipmentSlot.MAINHAND).get(Attributes.ATTACK_DAMAGE)) {
-                        damage += modifier.getAmount();
-                    }
-                    Warhammer weapon = (Warhammer)player.getMainHandItem().getItem();
-                    damage *= (1f-weapon.reduction);
-                    System.out.println(damage);
-                    // Damage entity
-                    livingEntity.hurt(ModDamageSource.HAMMERED, damage);
-                } catch (Exception e) {}
-            }
+            try {
+                Warhammer weapon = (Warhammer)player.getMainHandItem().getItem();
+                List<Entity> entityList = level.getEntities(player, AABB.ofSize(player.position(),weapon.aoeRadius*2, 2, weapon.aoeRadius*2));
+                for (Entity entity : entityList) {
+                    try {
+                        LivingEntity livingEntity = (LivingEntity)entity;
+                        // Damage entity
+                        livingEntity.hurt(ModDamageSource.HAMMERED, weapon.aoeDamage);
+                    } catch (Exception e) {}
+                }
+            } catch (Exception e) {}
         });
         return true;
     }

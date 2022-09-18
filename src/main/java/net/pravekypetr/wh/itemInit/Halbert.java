@@ -14,8 +14,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -30,7 +28,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -41,29 +38,21 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import net.minecraftforge.common.ForgeMod;
-import net.pravekypetr.wh.attributes.ModWeaponAttribute;
-import net.pravekypetr.wh.damageSource.ModDamageSource;
 
-public class Dagger extends TieredItem {
+public class Halbert extends TieredItem {
     public final float attackDamage;
     public final float reach;
     public final float attackSpeed;
-    public final float cooldown;
-    public final float damageAmplifier;
-
-    private boolean stab = false;
 
     protected static final UUID ATTACK_REACH_MODIFIER = UUID.fromString("2f8f916c-bf09-11ec-9d64-0242ac120002");
 
     private Multimap<Attribute, AttributeModifier> map;
 
-    public Dagger(Tier tier, int dmg, float speed, Item.Properties properties) {
+    public Halbert(Tier tier, int dmg, float speed, Item.Properties properties) {
         super(tier, properties);
         this.attackDamage = (float)dmg+tier.getAttackDamageBonus();
-        this.reach = -0.5f;
+        this.reach = 3.5f;
         this.attackSpeed = speed;
-        this.cooldown = 60;
-        this.damageAmplifier = 2;
 
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", this.attackDamage, AttributeModifier.Operation.ADDITION));
@@ -72,8 +61,6 @@ public class Dagger extends TieredItem {
         if (ForgeMod.REACH_DISTANCE.isPresent()) {
             builder.put(ForgeMod.REACH_DISTANCE.get(), new AttributeModifier(ATTACK_REACH_MODIFIER, "Weapon modifier", this.reach, AttributeModifier.Operation.ADDITION));
         }
-        builder.put(ModWeaponAttribute.ADDITIONAL_DAMAGE.get(), new AttributeModifier(ModWeaponAttribute.ADDITIONAL_DAMAGE_MODIFIER, "Weapon modifier", this.damageAmplifier, AttributeModifier.Operation.ADDITION));
-        builder.put(ModWeaponAttribute.SPEACIAL_COOLDOWN.get(), new AttributeModifier(ModWeaponAttribute.SPECIAL_COOLDOWN_MODIFIER, "Weapon modifier", this.cooldown/20, AttributeModifier.Operation.ADDITION));
         map = builder.build();
     }
 
@@ -81,16 +68,11 @@ public class Dagger extends TieredItem {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
         if (Screen.hasShiftDown()) {
-            components.add(Component.translatable("wh.dagger.info").withStyle(ChatFormatting.AQUA));
+            components.add(Component.translatable("wh.halbert.info").withStyle(ChatFormatting.AQUA));
         } else {
             components.add(Component.translatable("wh.info").withStyle(ChatFormatting.YELLOW));
         }
         super.appendHoverText(stack, level, components, flag);
-    }
-
-    @Override
-    public boolean canAttackBlock(BlockState p_43291_, Level p_43292_, BlockPos p_43293_, Player p_43294_) {
-        return !p_43294_.isCreative();
     }
 
     @Override
@@ -102,21 +84,26 @@ public class Dagger extends TieredItem {
            return material != Material.PLANT && material != Material.REPLACEABLE_PLANT && !p_43289_.is(BlockTags.LEAVES) && material != Material.VEGETABLE ? 1.0F : 1.5F;
         }
     }
+    
+    @Override
+    public boolean canAttackBlock(BlockState p_43291_, Level p_43292_, BlockPos p_43293_, Player p_43294_) {
+        return !p_43294_.isCreative();
+    }
 
     public boolean hurtEnemy(ItemStack p_43278_, LivingEntity p_43279_, LivingEntity p_43280_) {
         p_43278_.hurtAndBreak(1, p_43280_, (p_43296_) -> {
-            p_43296_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+           p_43296_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
         });
         return true;
     }
-
+  
     public boolean mineBlock(ItemStack p_43282_, Level p_43283_, BlockState p_43284_, BlockPos p_43285_, LivingEntity p_43286_) {
         if (p_43284_.getDestroySpeed(p_43283_, p_43285_) != 0.0F) {
-            p_43282_.hurtAndBreak(2, p_43286_, (p_43276_) -> {
-                p_43276_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
-            });
+           p_43282_.hurtAndBreak(2, p_43286_, (p_43276_) -> {
+              p_43276_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+           });
         }
-
+  
         return true;
     }
 
@@ -125,7 +112,12 @@ public class Dagger extends TieredItem {
         return slot == EquipmentSlot.MAINHAND ? map : super.getAttributeModifiers(slot, stack);
     }
 
-    //Different attack method
+    @Override
+    public boolean canPerformAction(ItemStack stack, net.minecraftforge.common.ToolAction toolAction) {
+       return net.minecraftforge.common.ToolActions.DEFAULT_SWORD_ACTIONS.contains(toolAction);
+    }
+
+    //This also works on blocks btw
     @Override
     public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
         double reach = entity.getAttributeValue(ForgeMod.REACH_DISTANCE.get());
@@ -136,6 +128,7 @@ public class Dagger extends TieredItem {
         Vec3 eyeVec = entity.getEyePosition(1.0F);
         Vec3 targetVec = eyeVec.add(viewVec.x * reach, viewVec.y * reach, viewVec.z * reach);
 
+        //Expanding the attacker's bounding box by the view vector's scale, and inflating it by 4.0D (x, y, z)
         AABB viewBB = entity.getBoundingBox().expandTowards(viewVec.scale(reach)).inflate(4.0D, 4.0D, 4.0D);
         EntityHitResult result = ProjectileUtil.getEntityHitResult(world, entity, eyeVec, targetVec, viewBB, EntitySelector.NO_CREATIVE_OR_SPECTATOR);
 
@@ -147,35 +140,14 @@ public class Dagger extends TieredItem {
 
         boolean hitResult = (result != null ? target : null) != null;
 
-        // Custom attack with lowered reach
-        if (hitResult && !stab) {
+        // Custom attack with extender reach
+        if (hitResult) {
             if (entity instanceof Player) {
                 if (reachSqr >= distanceToTargetSqr) {
                     target.hurt(DamageSource.playerAttack((Player) entity), this.attackDamage+1);
                 }
             }
         }
-        if (hitResult && stab) {
-            if (entity instanceof Player) {
-                if (reachSqr >= distanceToTargetSqr) {
-                    target.hurt(ModDamageSource.STABBED, this.attackDamage+1);
-                    stab = false;
-                }
-            }
-        }
         return super.onEntitySwing(stack, entity);
-    }
-
-    // Right click method
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        if (!level.isClientSide() && hand == InteractionHand.OFF_HAND && 
-            player.getMainHandItem().getItem() instanceof SwordItem
-            ) {
-                stab = true;
-                this.onEntitySwing(player.getOffhandItem(), player);
-                player.getCooldowns().addCooldown(this, (int)this.cooldown);
-        }
-        return super.use(level, player, hand);
     }
 }

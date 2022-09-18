@@ -15,8 +15,8 @@ public class ModWeaponAttribute {
 
     // Attirubtes
     public static final RegistryObject<Attribute> AOE_RADIUS = ATTRIBUTES.register("aoe.radius", () -> (Attribute) new RangedAttribute("attribute.aoe.radius", 0.0D, 0.0D, 1024.0D));
-    public static final RegistryObject<Attribute> AOE_DAMAGE = ATTRIBUTES.register("aoe.damage", () -> (Attribute) new RangedAttribute("attribute.aoe.radius", 0.0D, 0.0D, 1024.0D));
-    public static final RegistryObject<Attribute> ADDITIONAL_DAMAGE = ATTRIBUTES.register("add.damage", () -> (Attribute) new RangedAttribute("attribute.add.damage", 0.0D, 0.0D, 1024.0D));
+    public static final RegistryObject<Attribute> AOE_DAMAGE = ATTRIBUTES.register("aoe.damage", () -> (Attribute) new RangedAttribute("attribute.aoe.damage", 0.0D, 0.0D, 1024.0D));
+    public static final RegistryObject<Attribute> ADDITIONAL_DAMAGE = ATTRIBUTES.register("add.damage", () -> (Attribute) new RangedAttribute("attribute.add_damage", 0.0D, 0.0D, 1024.0D));
     public static final RegistryObject<Attribute> SPEACIAL_COOLDOWN = ATTRIBUTES.register("special.cooldown", () -> (Attribute) new RangedAttribute("attribute.special.cooldown", 0.0D, 0.0D, 1024.0D));
 
     // Modifiers

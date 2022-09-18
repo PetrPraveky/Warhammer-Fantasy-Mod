@@ -11,9 +11,11 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -24,7 +26,9 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
 import net.pravekypetr.wh.attributes.ModWeaponAttribute;
 import net.pravekypetr.wh.networking.ModMessages;
 import net.pravekypetr.wh.networking.packet.HammerSlamC2S;
@@ -36,18 +40,24 @@ public class Warhammer extends TieredItem {
     public final float aoeRadius;
     public final float cooldown;
     public final float reduction;
+    public final boolean heavy;
     // public static float aoeDamage;
 
     private Multimap<Attribute, AttributeModifier> map;
 
-    public Warhammer(Tier tier, int dmg, float speed, Item.Properties properties) {
+    public Warhammer(Tier tier, int dmg, float speed, float cooldown, float radius, boolean heavy, Item.Properties properties) {
         super(tier, properties);
         this.attackDamage = (float)dmg+tier.getAttackDamageBonus();
         this.attackSpeed = speed;
-        this.aoeRadius = 2;
-        this.cooldown = 40;
-        this.reduction = 0.4f;
+        this.aoeRadius = radius;
+        this.cooldown = cooldown;
+        if (heavy) {
+            this.reduction = 0.4f;
+        } else {
+            this.reduction = 0.6f;
+        }
         this.aoeDamage = (this.attackDamage+1)*(1f-this.reduction);
+        this.heavy = heavy;
 
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", this.attackDamage, AttributeModifier.Operation.ADDITION));
@@ -55,7 +65,6 @@ public class Warhammer extends TieredItem {
         builder.put(ModWeaponAttribute.AOE_RADIUS.get(), new AttributeModifier(ModWeaponAttribute.AOE_RADIUS_MODIFIER, "Weapon modifier", this.aoeRadius, AttributeModifier.Operation.ADDITION));
         builder.put(ModWeaponAttribute.AOE_DAMAGE.get(), new AttributeModifier(ModWeaponAttribute.AOE_DAMAGE_MODIFIER, "Weapon modifier", this.aoeDamage, AttributeModifier.Operation.ADDITION));
         builder.put(ModWeaponAttribute.SPEACIAL_COOLDOWN.get(), new AttributeModifier(ModWeaponAttribute.SPECIAL_COOLDOWN_MODIFIER, "Weapon modifier", this.cooldown/20, AttributeModifier.Operation.ADDITION));
-        //Checking if the Forge 'Reach' Attribute is present
         map = builder.build();
     }
 
@@ -63,7 +72,11 @@ public class Warhammer extends TieredItem {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
         if (Screen.hasShiftDown()) {
-            components.add(Component.translatable("wh.warhammer.info").withStyle(ChatFormatting.AQUA));
+            if (this.heavy) {
+                components.add(Component.translatable("wh.warhammer.info").withStyle(ChatFormatting.AQUA));
+            } else {
+                components.add(Component.translatable("wh.warhammer.one_handed.info").withStyle(ChatFormatting.AQUA));
+            }
         } else {
             components.add(Component.translatable("wh.info").withStyle(ChatFormatting.YELLOW));
         }
@@ -73,7 +86,34 @@ public class Warhammer extends TieredItem {
     @Override
     public boolean canAttackBlock(BlockState p_43291_, Level p_43292_, BlockPos p_43293_, Player p_43294_) {
         return !p_43294_.isCreative();
-     }
+    }
+
+    @Override
+    public float getDestroySpeed(ItemStack p_43288_, BlockState p_43289_) {
+        if (p_43289_.is(Blocks.COBWEB)) {
+        return 15.0F;
+        } else {
+        Material material = p_43289_.getMaterial();
+        return material != Material.PLANT && material != Material.REPLACEABLE_PLANT && !p_43289_.is(BlockTags.LEAVES) && material != Material.VEGETABLE ? 1.0F : 1.5F;
+        }
+    }
+
+    public boolean hurtEnemy(ItemStack p_43278_, LivingEntity p_43279_, LivingEntity p_43280_) {
+        p_43278_.hurtAndBreak(1, p_43280_, (p_43296_) -> {
+           p_43296_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+        });
+        return true;
+    }
+  
+    public boolean mineBlock(ItemStack p_43282_, Level p_43283_, BlockState p_43284_, BlockPos p_43285_, LivingEntity p_43286_) {
+        if (p_43284_.getDestroySpeed(p_43283_, p_43285_) != 0.0F) {
+           p_43282_.hurtAndBreak(2, p_43286_, (p_43276_) -> {
+              p_43276_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+           });
+        }
+  
+        return true;
+    }
 
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
