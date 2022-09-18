@@ -5,6 +5,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.pravekypetr.wh.WH;
+import net.pravekypetr.wh.itemInit.Battleaxe;
 import net.pravekypetr.wh.itemInit.Dagger;
 import net.pravekypetr.wh.itemInit.Halbert;
 import net.pravekypetr.wh.itemInit.Spear;
@@ -41,7 +42,7 @@ public class ModWeapons {
     public static final RegistryObject<Item> NETHERITE_HALBERT = WEAPONS.register("netherite_halbert", () -> new Halbert(Tiers.NETHERITE, 3, -2f, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
 
     // ONE-HANDED WARHAMMER
-    public static final RegistryObject<Item> ONE_HANDED_WOODEN_WARHAMMER = WEAPONS.register("wooden_one_handed_warhammer", () -> new Warhammer(Tiers.WOOD, 3, -3.2f, 2, 30, false, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
+    public static final RegistryObject<Item> ONE_HANDED_WOODEN_WARHAMMER = WEAPONS.register("wooden_one_handed_warhammer", () -> new Warhammer(Tiers.WOOD, 3, -3.2f, 30, 2, false, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
     public static final RegistryObject<Item> ONE_HANDED_STONE_WARHAMMER = WEAPONS.register("stone_one_handed_warhammer", () -> new Warhammer(Tiers.STONE, 3, -3.2f, 30, 2, false, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
     public static final RegistryObject<Item> ONE_HANDED_IRON_WARHAMMER = WEAPONS.register("iron_one_handed_warhammer", () -> new Warhammer(Tiers.IRON, 3, -3.2f, 30, 2, false, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
     public static final RegistryObject<Item> ONE_HANDED_GOLDEN_WARHAMMER = WEAPONS.register("golden_one_handed_warhammer", () -> new Warhammer(Tiers.GOLD, 3, -3.2f, 30, 2, false, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
@@ -56,7 +57,15 @@ public class ModWeapons {
     public static final RegistryObject<Item> DIAMOND_WARHAMMER = WEAPONS.register("diamond_warhammer", () -> new Warhammer(Tiers.DIAMOND, 6, -3.2f, 40, 3, true, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
     public static final RegistryObject<Item> NETHERITE_WARHAMMER = WEAPONS.register("netherite_warhammer", () -> new Warhammer(Tiers.NETHERITE, 6, -3.2f, 40, 3, true, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
 
+    // TWO-HANDED BATTLEAXE
+    public static final RegistryObject<Item> WOODEN_BATTLEAXE = WEAPONS.register("wooden_battleaxe", () -> new Battleaxe(Tiers.WOOD, 8, -2.2f, true, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
+    public static final RegistryObject<Item> STONE_BATTLEAXE = WEAPONS.register("stone_battleaxe", () -> new Battleaxe(Tiers.STONE, 8, -2.2f, true, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
+    public static final RegistryObject<Item> IRON_BATTLEAXE = WEAPONS.register("iron_battleaxe", () -> new Battleaxe(Tiers.IRON, 8, -2.2f, true, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
+    public static final RegistryObject<Item> GOLDEN_BATTLEAXE = WEAPONS.register("golden_battleaxe", () -> new Battleaxe(Tiers.GOLD, 8, -2.2f, true, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
+    public static final RegistryObject<Item> DIAMOND_BATTLEAXE = WEAPONS.register("diamond_battleaxe", () -> new Battleaxe(Tiers.DIAMOND, 8, -2.2f, true, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
+    public static final RegistryObject<Item> NETHERITE_BATTLEAXE = WEAPONS.register("netherite_battleaxe", () -> new Battleaxe(Tiers.NETHERITE, 8, -2.2f, true, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
 
+    
     // VANILLA
 
     // Register method

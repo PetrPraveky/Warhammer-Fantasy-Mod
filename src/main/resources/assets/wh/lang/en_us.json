@@ -15,6 +15,20 @@
     "item.wh.diamond_spear": "Diamond spear",
     "item.wh.netherite_spear": "Nehterite spear",
 
+    "item.wh.wooden_halbert": "Wooden Halbert",
+    "item.wh.stone_halbert": "Stone Halbert",
+    "item.wh.iron_halbert": "Iron Halbert",
+    "item.wh.golden_halbert": "Golden Halbert",
+    "item.wh.diamond_halbert": "Diamond Halbert",
+    "item.wh.netherite_halbert": "Netherite Halbert",
+
+    "item.wh.wooden_one_handed_warhammer": "One-handed Wooden Warhammer",
+    "item.wh.stone_one_handed_warhammer": "One-handed Stone Warhammer",
+    "item.wh.iron_one_handed_warhammer": "One-handed Iron Warhammer",
+    "item.wh.golden_one_handed_warhammer": "One-handed Golden Warhammer",
+    "item.wh.diamond_one_handed_warhammer": "One-handed Diamond Warhammer",
+    "item.wh.netherite_one_handed_warhammer": "One-handed Netherite Warhammer",
+
     "item.wh.wooden_warhammer": "Two-handed Wooden Warhammer",
     "item.wh.stone_warhammer": "Two-handed Stone Warhammer",
     "item.wh.iron_warhammer": "Two-handed Iron Warhammer",
@@ -28,7 +42,7 @@
 
     "itemGroup.ore_tab": "Warhammer Ores",
 
-    "attribute.aoe.radius": "Radius of AoE Damage",
+    "attribute.aoe.radius": "Radius of AoE",
     "attribute.aoe.damage": "AoE Damage",
     "attribute.special.cooldown": "Ability Cooldown",
     "attirubte.add.damage": "Additional Damage",
@@ -36,6 +50,8 @@
     "wh.info": "Press SHIFT for more info",
 
     "wh.warhammer.info": "\n- With right click, you can deal AoE attack \n   in range of 2 blocks around you. \n- Damage of this attack is 60% of normal attack and \n   you can do it only once every 2 seconds\n",
+    "wh.warhammer.one_handed.info": "\n- With right click, you can deal AoE attack \n   in range of 2 blocks around you. \n- Damage of this attack is 60% of normal attack and \n   you can do it only once every 2 seconds\n",
     "wh.dagger.info": "\n- Dagger weapons have decreased attack range. \n- But to compensate this, if you hold it in your off-hand, \n   you can deal more damage with sword-type items \n   like sword, rapier, etc. \n- Also if you right click you deal additional damage. \n- If you dont hold sword in your main hand, \n   when rightclicked, you can throw the dagger.\n",
-    "wh.spear.info": "\n- Spear weapons have increased attack range. \n- You can also throw it with right click, but be warned, \n   it will decrease durability of spear by large amount.\n"
+    "wh.spear.info": "\n- Spear weapons have increased attack range. \n- You can also throw it with right click, but be warned, \n   it will decrease durability of spear by large amount.\n",
+    "wh.halbert.info": "\n- Halbert weapons have increased attack range. \n- They also have sweep attack, like sword, on closer range. \n- They deal more damage than spear, but can't be thrown.\n"
 }

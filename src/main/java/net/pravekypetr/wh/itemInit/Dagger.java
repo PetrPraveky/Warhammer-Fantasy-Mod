@@ -51,6 +51,8 @@ public class Dagger extends TieredItem {
     public final float cooldown;
     public final float damageAmplifier;
 
+    public boolean remover;
+
     private boolean stab = false;
 
     protected static final UUID ATTACK_REACH_MODIFIER = UUID.fromString("2f8f916c-bf09-11ec-9d64-0242ac120002");
@@ -103,20 +105,13 @@ public class Dagger extends TieredItem {
         }
     }
 
-    public boolean hurtEnemy(ItemStack p_43278_, LivingEntity p_43279_, LivingEntity p_43280_) {
-        p_43278_.hurtAndBreak(1, p_43280_, (p_43296_) -> {
-            p_43296_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
-        });
-        return true;
-    }
-
+    @Override
     public boolean mineBlock(ItemStack p_43282_, Level p_43283_, BlockState p_43284_, BlockPos p_43285_, LivingEntity p_43286_) {
         if (p_43284_.getDestroySpeed(p_43283_, p_43285_) != 0.0F) {
             p_43282_.hurtAndBreak(2, p_43286_, (p_43276_) -> {
                 p_43276_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
             });
         }
-
         return true;
     }
 
@@ -128,6 +123,11 @@ public class Dagger extends TieredItem {
     //Different attack method
     @Override
     public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
+        if (remover && !stab) {
+            remover = false;
+            return true;
+        }
+        
         double reach = entity.getAttributeValue(ForgeMod.REACH_DISTANCE.get());
         double reachSqr = reach * reach;
         Level world = entity.level;
@@ -175,7 +175,7 @@ public class Dagger extends TieredItem {
                 stab = true;
                 this.onEntitySwing(player.getOffhandItem(), player);
                 player.getCooldowns().addCooldown(this, (int)this.cooldown);
-        }
+        } else {}
         return super.use(level, player, hand);
     }
 }

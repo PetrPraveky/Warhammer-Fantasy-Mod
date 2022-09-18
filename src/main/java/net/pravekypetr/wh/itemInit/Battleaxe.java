@@ -12,8 +12,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -30,37 +28,27 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.pravekypetr.wh.attributes.ModWeaponAttribute;
-import net.pravekypetr.wh.networking.ModMessages;
-import net.pravekypetr.wh.networking.packet.HammerSlamC2S;
 
-public class Warhammer extends TieredItem {
+public class Battleaxe extends TieredItem {
     public final float attackDamage;
     public final float attackSpeed;
-    public final float aoeDamage;
-    public final float aoeRadius;
     public final float cooldown;
-    public final float reduction;
     public final boolean heavy;
-    // public static float aoeDamage;
 
     private Multimap<Attribute, AttributeModifier> map;
 
-    public Warhammer(Tier tier, int dmg, float speed, float cooldown, float radius, boolean heavy, Item.Properties properties) {
+    public Battleaxe(Tier tier, int dmg, float speed, boolean heavy, Item.Properties properties) {
         super(tier, properties);
         this.attackDamage = (float)dmg+tier.getAttackDamageBonus();
         this.attackSpeed = speed;
-        this.aoeRadius = radius;
-        this.cooldown = cooldown;
-        this.reduction = 0.4f;
-        this.aoeDamage = (this.attackDamage+1)*(1f-this.reduction);
         this.heavy = heavy;
+        this.cooldown = 30;
 
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", this.attackDamage, AttributeModifier.Operation.ADDITION));
         builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", this.attackSpeed, AttributeModifier.Operation.ADDITION));
-        builder.put(ModWeaponAttribute.AOE_RADIUS.get(), new AttributeModifier(ModWeaponAttribute.AOE_RADIUS_MODIFIER, "Weapon modifier", this.aoeRadius, AttributeModifier.Operation.ADDITION));
-        builder.put(ModWeaponAttribute.AOE_DAMAGE.get(), new AttributeModifier(ModWeaponAttribute.AOE_DAMAGE_MODIFIER, "Weapon modifier", this.aoeDamage, AttributeModifier.Operation.ADDITION));
         builder.put(ModWeaponAttribute.SPEACIAL_COOLDOWN.get(), new AttributeModifier(ModWeaponAttribute.SPECIAL_COOLDOWN_MODIFIER, "Weapon modifier", this.cooldown/20, AttributeModifier.Operation.ADDITION));
+
         map = builder.build();
     }
 
@@ -68,11 +56,7 @@ public class Warhammer extends TieredItem {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
         if (Screen.hasShiftDown()) {
-            if (this.heavy) {
-                components.add(Component.translatable("wh.warhammer.info").withStyle(ChatFormatting.AQUA));
-            } else {
-                components.add(Component.translatable("wh.warhammer.one_handed.info").withStyle(ChatFormatting.AQUA));
-            }
+            components.add(Component.translatable("wh.battleaxe.info").withStyle(ChatFormatting.AQUA));
         } else {
             components.add(Component.translatable("wh.info").withStyle(ChatFormatting.YELLOW));
         }
@@ -101,7 +85,6 @@ public class Warhammer extends TieredItem {
               p_43276_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
            });
         }
-  
         return true;
     }
 
@@ -111,11 +94,18 @@ public class Warhammer extends TieredItem {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
-        if (!world.isClientSide()) {
-            ModMessages.sendToServer(new HammerSlamC2S());
-            player.getCooldowns().addCooldown(this, (int)this.cooldown);
-        }
-        return super.use(world, player, hand);
+    public boolean canPerformAction(ItemStack stack, net.minecraftforge.common.ToolAction toolAction) {
+        return net.minecraftforge.common.ToolActions.DEFAULT_SWORD_ACTIONS.contains(toolAction);
     }
+
+    /*@Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        if (!level.isClientSide() && hand == InteractionHand.OFF_HAND && 
+            player.getMainHandItem().getItem() instanceof SwordItem
+            ) {
+                this.onEntitySwing(player.getOffhandItem(), player);
+                player.getCooldowns().addCooldown(this, (int)this.cooldown);
+        } else {}
+        return super.use(level, player, hand);
+    }*/
 }
