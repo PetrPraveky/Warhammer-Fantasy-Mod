@@ -8,6 +8,8 @@ import net.pravekypetr.wh.WH;
 import net.pravekypetr.wh.itemInit.Battleaxe;
 import net.pravekypetr.wh.itemInit.Dagger;
 import net.pravekypetr.wh.itemInit.Halbert;
+import net.pravekypetr.wh.itemInit.Longsword;
+import net.pravekypetr.wh.itemInit.Rapier;
 import net.pravekypetr.wh.itemInit.Spear;
 import net.pravekypetr.wh.itemInit.Warhammer;
 import net.minecraft.world.item.CreativeModeTab;
@@ -24,6 +26,14 @@ public class ModWeapons {
     public static final RegistryObject<Item> GOLDEN_DAGGER = WEAPONS.register("golden_dagger", () -> new Dagger(Tiers.GOLD, 2, -1.5f, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
     public static final RegistryObject<Item> DIAMOND_DAGGER = WEAPONS.register("diamond_dagger", () -> new Dagger(Tiers.DIAMOND, 2, -1.5f, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
     public static final RegistryObject<Item> NETHERITE_DAGGER = WEAPONS.register("netherite_dagger", () -> new Dagger(Tiers.NETHERITE, 2, -1.5f, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
+
+    // TWO-HANDED SWORD
+    public static final RegistryObject<Item> WOODEN_LONGSWORD = WEAPONS.register("wooden_two_handed_sword", () -> new Longsword(Tiers.WOOD, 5, -2.5f, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
+    public static final RegistryObject<Item> STONE_LONGSWORD = WEAPONS.register("stone_two_handed_sword", () -> new Longsword(Tiers.STONE, 5, -2.5f, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
+    public static final RegistryObject<Item> IRON_LONGSWORD = WEAPONS.register("iron_two_handed_sword", () -> new Longsword(Tiers.IRON, 5, -2.5f, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
+    public static final RegistryObject<Item> GOLDEN_LONGSWORD = WEAPONS.register("golden_two_handed_sword", () -> new Longsword(Tiers.GOLD, 5, -2.5f, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
+    public static final RegistryObject<Item> DIAMOND_LONGSWORD = WEAPONS.register("diamond_two_handed_sword", () -> new Longsword(Tiers.DIAMOND, 5, -2.5f, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
+    public static final RegistryObject<Item> NETHERITE_LONGSWORD = WEAPONS.register("netherite_two_handed_sword", () -> new Longsword(Tiers.NETHERITE, 5, -2.5f, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
 
     // SPEARS
     public static final RegistryObject<Item> WOODEN_SPEAR = WEAPONS.register("wooden_spear", () -> new Spear(Tiers.WOOD, 2, -2f, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
@@ -65,7 +75,14 @@ public class ModWeapons {
     public static final RegistryObject<Item> DIAMOND_BATTLEAXE = WEAPONS.register("diamond_battleaxe", () -> new Battleaxe(Tiers.DIAMOND, 8, -2.2f, true, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
     public static final RegistryObject<Item> NETHERITE_BATTLEAXE = WEAPONS.register("netherite_battleaxe", () -> new Battleaxe(Tiers.NETHERITE, 8, -2.2f, true, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
 
-    
+    // RAPIER
+    public static final RegistryObject<Item> WOODEN_RAPIER = WEAPONS.register("wooden_rapier", () -> new Rapier(Tiers.WOOD, 3, -1.2f, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
+    public static final RegistryObject<Item> STONE_RAPIER = WEAPONS.register("stone_rapier", () -> new Rapier(Tiers.STONE, 3, -1.2f, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
+    public static final RegistryObject<Item> IRON_RAPIER = WEAPONS.register("iron_rapier", () -> new Rapier(Tiers.IRON, 3, -1.2f, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
+    public static final RegistryObject<Item> GOLDEN_RAPIER = WEAPONS.register("golden_rapier", () -> new Rapier(Tiers.GOLD, 3, -1.2f, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
+    public static final RegistryObject<Item> DIAMOND_RAPIER = WEAPONS.register("diamond_rapier", () -> new Rapier(Tiers.DIAMOND, 3, -1.2f, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
+    public static final RegistryObject<Item> NETHERITE_RAPIER = WEAPONS.register("netherite_rapier", () -> new Rapier(Tiers.NETHERITE, 3, -1.2f, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT)));
+
     // VANILLA
 
     // Register method

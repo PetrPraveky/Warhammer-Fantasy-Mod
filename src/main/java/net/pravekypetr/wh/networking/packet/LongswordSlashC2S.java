@@ -11,14 +11,14 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.network.NetworkEvent;
 import net.pravekypetr.wh.damageSource.ModDamageSource;
-import net.pravekypetr.wh.itemInit.Warhammer;
+import net.pravekypetr.wh.itemInit.Longsword;
 import net.minecraft.world.entity.EquipmentSlot;
 
-public class HammerSlamC2S {
-    public HammerSlamC2S() {
+public class LongswordSlashC2S {
+    public LongswordSlashC2S() {
     }
 
-    public HammerSlamC2S(FriendlyByteBuf buf) {
+    public LongswordSlashC2S(FriendlyByteBuf buf) {
     }
 
     public void toBytes(FriendlyByteBuf buf) {
@@ -35,19 +35,14 @@ public class HammerSlamC2S {
             ServerPlayer player = context.getSender();
             ServerLevel level = player.getLevel();
             try {                  
-                Warhammer weapon = (Warhammer)player.getMainHandItem().getItem();
+                Longsword weapon = (Longsword)player.getMainHandItem().getItem();
                 List<Entity> entityList = level.getEntities(player, AABB.ofSize(player.position(),weapon.aoeRadius*2, 2, weapon.aoeRadius*2));
                 for (Entity entity : entityList) {
                     try {
                         LivingEntity livingEntity = (LivingEntity)entity;
-                        float force;
-                        if (weapon.heavy) {
-                            force = 0.5f;
-                        } else {
-                            force = 0.35f;
-                        }
+                        float force = 0.2f;
                         livingEntity.knockback((double)(force), (double)(player.position().x-livingEntity.position().x), (double)(player.position().y-livingEntity.position().y));
-                        livingEntity.hurt(ModDamageSource.HAMMERED, weapon.aoeDamage);
+                        livingEntity.hurt(ModDamageSource.SLASHED, weapon.aoeDamage);
                         player.getMainHandItem().hurtAndBreak(1, player, e -> e.broadcastBreakEvent(EquipmentSlot.MAINHAND));
                         
                     } catch (Exception e) {}

@@ -24,7 +24,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -71,9 +70,9 @@ public class Halbert extends TieredItem {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
         if (Screen.hasShiftDown()) {
-            components.add(Component.translatable("wh.halbert.info").withStyle(ChatFormatting.AQUA));
+            components.add(Component.translatable("wh.info.halbert").withStyle(ChatFormatting.AQUA));
         } else {
-            components.add(Component.translatable("wh.info").withStyle(ChatFormatting.YELLOW));
+            components.add(Component.translatable("wh.info.description").withStyle(ChatFormatting.YELLOW));
         }
         super.appendHoverText(stack, level, components, flag);
     }
@@ -101,6 +100,14 @@ public class Halbert extends TieredItem {
            });
         }
   
+        return true;
+    }
+
+    @Override
+    public boolean hurtEnemy(ItemStack p_43278_, LivingEntity p_43279_, LivingEntity p_43280_) {
+        p_43278_.hurtAndBreak(1, p_43280_, (p_43296_) -> {
+           p_43296_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+        });
         return true;
     }
 

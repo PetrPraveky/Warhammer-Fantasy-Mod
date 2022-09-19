@@ -14,6 +14,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;
@@ -33,6 +34,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -83,9 +85,9 @@ public class Dagger extends TieredItem {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
         if (Screen.hasShiftDown()) {
-            components.add(Component.translatable("wh.dagger.info").withStyle(ChatFormatting.AQUA));
+            components.add(Component.translatable("wh.info.dagger").withStyle(ChatFormatting.AQUA));
         } else {
-            components.add(Component.translatable("wh.info").withStyle(ChatFormatting.YELLOW));
+            components.add(Component.translatable("wh.info.description").withStyle(ChatFormatting.YELLOW));
         }
         super.appendHoverText(stack, level, components, flag);
     }
@@ -112,6 +114,14 @@ public class Dagger extends TieredItem {
                 p_43276_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
             });
         }
+        return true;
+    }
+
+    @Override
+    public boolean hurtEnemy(ItemStack p_43278_, LivingEntity p_43279_, LivingEntity p_43280_) {
+        p_43278_.hurtAndBreak(1, p_43280_, (p_43296_) -> {
+           p_43296_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+        });
         return true;
     }
 
@@ -158,6 +168,10 @@ public class Dagger extends TieredItem {
         if (hitResult && stab) {
             if (entity instanceof Player) {
                 if (reachSqr >= distanceToTargetSqr) {
+                    float i = (float)entity.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
+                    i += EnchantmentHelper.getKnockbackBonus(entity);
+                    System.out.println(i);
+                    target.knockback(i, (double)Mth.sin(entity.getYRot() * ((float)Math.PI / 180F)), (double)(-Mth.cos(entity.getYRot() * ((float)Math.PI / 180F))));
                     target.hurt(ModDamageSource.STABBED, this.attackDamage+1);
                     stab = false;
                 }
@@ -170,11 +184,14 @@ public class Dagger extends TieredItem {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         if (!level.isClientSide() && hand == InteractionHand.OFF_HAND && 
-            player.getMainHandItem().getItem() instanceof SwordItem
+            player.getMainHandItem().getItem() instanceof SwordItem ||
+            !level.isClientSide() && hand == InteractionHand.OFF_HAND && 
+            player.getMainHandItem().getItem() instanceof Rapier
             ) {
                 stab = true;
                 this.onEntitySwing(player.getOffhandItem(), player);
                 player.getCooldowns().addCooldown(this, (int)this.cooldown);
+                player.getOffhandItem().hurtAndBreak(1, player, e -> {e.broadcastBreakEvent(EquipmentSlot.OFFHAND);});
         } else {}
         return super.use(level, player, hand);
     }

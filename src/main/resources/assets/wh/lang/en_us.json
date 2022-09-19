@@ -1,6 +1,15 @@
 {
     "item.wh.warpstone": "Warpstone",
 
+
+
+    "item.wh.wooden_two_handed_sword": "Two-handed Wooden Sword",
+    "item.wh.stone_two_handed_sword": "Two-handed Stone Sword",
+    "item.wh.iron_two_handed_sword": "Two-handed Iron Sword",
+    "item.wh.golden_two_handed_sword": "Two-handed Golden Sword",
+    "item.wh.diamond_two_handed_sword": "Two-handed Diamond Sword",
+    "item.wh.netherite_two_handed_sword": "Two-handed Netherite Sword",
+
     "item.wh.wooden_dagger": "Wooden Dagger",
     "item.wh.stone_dagger": "Stone Dagger",
     "item.wh.iron_dagger": "Iron Dagger",
@@ -36,22 +45,50 @@
     "item.wh.diamond_warhammer": "Two-handed Diamond Warhammer",
     "item.wh.netherite_warhammer": "Two-handed Netherite Warhammer",
 
+    "item.wh.wooden_battleaxe": "Wooden Battleaxe",
+    "item.wh.stone_battleaxe": "Stone Battleaxe",
+    "item.wh.iron_battleaxe": "Iron Battleaxe",
+    "item.wh.golden_battleaxe": "Golden Battleaxe",
+    "item.wh.diamond_battleaxe": "Diamond Battleaxe",
+    "item.wh.netherite_battleaxe": "Netherite Battleaxe",
+
+    "item.wh.wooden_rapier": "Wooden Rapier",
+    "item.wh.stone_rapier": "Stone Rapier",
+    "item.wh.iron_rapier": "Iron Rapier",
+    "item.wh.golden_rapier": "Golden Rapier",
+    "item.wh.diamond_rapier": "Diamond Rapier",
+    "item.wh.netherite_rapier": "Netherite Rapier",
+
+
+
     "block.wh.warpstone_block": "Block of Warpstone",
     "block.wh.warpstone_ore": "Warpstone Ore",
     "block.wh.deepslate_warpstone_ore": "Deepslate Warpstone Ore",
 
+
+
     "itemGroup.ore_tab": "Warhammer Ores",
+
+
 
     "attribute.aoe.radius": "Radius of AoE",
     "attribute.aoe.damage": "AoE Damage",
     "attribute.special.cooldown": "Ability Cooldown",
     "attirubte.add.damage": "Additional Damage",
 
-    "wh.info": "Press SHIFT for more info",
 
-    "wh.warhammer.info": "\n- With right click, you can deal AoE attack \n   in range of 2 blocks around you. \n- Damage of this attack is 60% of normal attack and \n   you can do it only once every 2 seconds\n",
-    "wh.warhammer.one_handed.info": "\n- With right click, you can deal AoE attack \n   in range of 2 blocks around you. \n- Damage of this attack is 60% of normal attack and \n   you can do it only once every 2 seconds\n",
-    "wh.dagger.info": "\n- Dagger weapons have decreased attack range. \n- But to compensate this, if you hold it in your off-hand, \n   you can deal more damage with sword-type items \n   like sword, rapier, etc. \n- Also if you right click you deal additional damage. \n- If you dont hold sword in your main hand, \n   when rightclicked, you can throw the dagger.\n",
-    "wh.spear.info": "\n- Spear weapons have increased attack range. \n- You can also throw it with right click, but be warned, \n   it will decrease durability of spear by large amount.\n",
-    "wh.halbert.info": "\n- Halbert weapons have increased attack range. \n- They also have sweep attack, like sword, on closer range. \n- They deal more damage than spear, but can't be thrown.\n"
+    "death.attack.slashed": "Cut into bits",
+    "death.attack.hammered": "Crushed by weight of hammer",
+
+
+    "wh.info.description": "Press SHIFT for description",
+
+    "wh.info.warhammer": "\n- With right click, you can deal AoE attack \n   in range of 2 blocks around you. \n- Damage of this attack is 60% of normal attack and \n   you can do it only once every 2 seconds\n",
+    "wh.info.warhammer.one_handed": "\n- With right click, you can deal AoE attack \n   in range of 2 blocks around you. \n- Damage of this attack is 60% of normal attack and \n   you can do it only once every 2 seconds\n",
+    "wh.info.dagger": "\n- Dagger weapons have decreased attack range. \n- But to compensate this, if you hold it in your off-hand, \n   you can deal more damage with sword-type items \n   like sword, rapier, etc. \n- Also if you right click you deal additional damage. \n- If you dont hold sword in your main hand, \n   when rightclicked, you can throw the dagger.\n",
+    "wh.info.spear": "\n- Spear weapons have increased attack range. \n- You can also throw it with right click, but be warned, \n   it will decrease durability of spear by large amount.\n",
+    "wh.info.halbert": "\n- Halbert weapons have increased attack range. \n- They also have sweep attack, like sword, on closer range. \n- They deal more damage than spear, but can't be thrown.\n",
+    "wh.info.longsword": "\n- Two-handed swords are slower than normal swords, \n   but deal more damage.\n- You can also do special attack with right click, \n   this will result in AoE attack.\n",
+    "wh.info.rapier": "\n- Rapiers are like sword, but faster and do not have \n   sweeping attacks.",
+    "wh.info.battleaxe": "\n- Battleaxes deal huge amount of damage, but are bit slow. \n- They also have second attack on right click, \n   which just do the same attack as left click."
 }

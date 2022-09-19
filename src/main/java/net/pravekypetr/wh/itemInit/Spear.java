@@ -70,9 +70,9 @@ public class Spear extends TieredItem {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
         if (Screen.hasShiftDown()) {
-            components.add(Component.translatable("wh.spear.info").withStyle(ChatFormatting.AQUA));
+            components.add(Component.translatable("wh.info.spear").withStyle(ChatFormatting.AQUA));
         } else {
-            components.add(Component.translatable("wh.info").withStyle(ChatFormatting.YELLOW));
+            components.add(Component.translatable("wh.info.description").withStyle(ChatFormatting.YELLOW));
         }
         super.appendHoverText(stack, level, components, flag);
     }
@@ -100,6 +100,14 @@ public class Spear extends TieredItem {
             });
         }
 
+        return true;
+    }
+
+    @Override
+    public boolean hurtEnemy(ItemStack p_43278_, LivingEntity p_43279_, LivingEntity p_43280_) {
+        p_43278_.hurtAndBreak(1, p_43280_, (p_43296_) -> {
+           p_43296_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+        });
         return true;
     }
 

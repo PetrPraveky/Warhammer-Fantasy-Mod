@@ -15,6 +15,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.pravekypetr.wh.WH;
 import net.pravekypetr.wh.itemInit.Dagger;
 import net.pravekypetr.wh.itemInit.Halbert;
+import net.pravekypetr.wh.itemInit.Rapier;
 import net.pravekypetr.wh.itemInit.Spear;
 import net.pravekypetr.wh.damageSource.ModDamageSource;
 
@@ -24,7 +25,9 @@ public class ModEvents {
     @SubscribeEvent
     public static void attackEntity(AttackEntityEvent event) {
         ItemStack heldItem = event.getEntity().getMainHandItem();
-        if (heldItem.getItem() instanceof Spear || heldItem.getItem() instanceof Dagger || heldItem.getItem() instanceof Halbert) {
+        if (heldItem.getItem() instanceof Spear || 
+            heldItem.getItem() instanceof Dagger || 
+            heldItem.getItem() instanceof Halbert) {
             event.setCanceled(true);
         }
     }
@@ -34,7 +37,7 @@ public class ModEvents {
         try {
             Player player = (Player)event.getSource().getEntity();
             if (player.getOffhandItem().getItem() instanceof Dagger) {
-                if (player.getMainHandItem().getItem() instanceof SwordItem) {
+                if (player.getMainHandItem().getItem() instanceof SwordItem || player.getMainHandItem().getItem() instanceof Rapier) {
                     LivingEntity entity = (LivingEntity)event.getEntity();
                     Dagger weapon = (Dagger)player.getOffhandItem().getItem();
                     float mainDamage = 1;
@@ -46,6 +49,16 @@ public class ModEvents {
                 }
             }
         } catch (Exception e) {}
+
+        try {
+            LivingEntity entity = (LivingEntity)event.getSource().getEntity();
+            if (entity.getMainHandItem().getItem() instanceof Rapier) {
+                LivingEntity target = (LivingEntity)event.getEntity();
+                Rapier weapon = (Rapier)target.getMainHandItem().getItem();
+                float damage = 1+weapon.attackDamage;
+                entity.hurt(ModDamageSource.RAPIER, damage);
+            }
+        } catch (Exception e) {}
     }
     @SubscribeEvent
     public static void rightClickOnEntity(PlayerInteractEvent event) {
@@ -55,10 +68,12 @@ public class ModEvents {
             if (player.getMainHandItem().getItem() instanceof Halbert) {
                 Halbert weapon = (Halbert)player.getMainHandItem().getItem();
                 weapon.remover = true;
-            } else if (player.getMainHandItem().getItem() instanceof Spear) {
+            }
+            if (player.getMainHandItem().getItem() instanceof Spear) {
                 Spear weapon = (Spear)player.getMainHandItem().getItem();
                 weapon.remover = true;
-            } else if (player.getMainHandItem().getItem() instanceof Dagger) {
+            }
+            if (player.getMainHandItem().getItem() instanceof Dagger) {
                 Dagger weapon = (Dagger)player.getMainHandItem().getItem();
                 weapon.remover = true;
             }

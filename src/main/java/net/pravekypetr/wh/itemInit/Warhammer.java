@@ -69,12 +69,12 @@ public class Warhammer extends TieredItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
         if (Screen.hasShiftDown()) {
             if (this.heavy) {
-                components.add(Component.translatable("wh.warhammer.info").withStyle(ChatFormatting.AQUA));
+                components.add(Component.translatable("wh.info.warhammer").withStyle(ChatFormatting.AQUA));
             } else {
-                components.add(Component.translatable("wh.warhammer.one_handed.info").withStyle(ChatFormatting.AQUA));
+                components.add(Component.translatable("wh.info.warhammer.one_handed").withStyle(ChatFormatting.AQUA));
             }
         } else {
-            components.add(Component.translatable("wh.info").withStyle(ChatFormatting.YELLOW));
+            components.add(Component.translatable("wh.info.description").withStyle(ChatFormatting.YELLOW));
         }
         super.appendHoverText(stack, level, components, flag);
     }
@@ -102,6 +102,14 @@ public class Warhammer extends TieredItem {
            });
         }
   
+        return true;
+    }
+
+    @Override
+    public boolean hurtEnemy(ItemStack p_43278_, LivingEntity p_43279_, LivingEntity p_43280_) {
+        p_43278_.hurtAndBreak(1, p_43280_, (p_43296_) -> {
+           p_43296_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+        });
         return true;
     }
 
