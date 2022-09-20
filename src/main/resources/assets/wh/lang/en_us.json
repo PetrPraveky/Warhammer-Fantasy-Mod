@@ -65,9 +65,12 @@
     "block.wh.warpstone_ore": "Warpstone Ore",
     "block.wh.deepslate_warpstone_ore": "Deepslate Warpstone Ore",
 
+    "block.wh.skaven_blast_furnace": "Skaven Blast Furnace",
 
 
-    "itemGroup.ore_tab": "Warhammer Ores",
+
+    "itemGroup.ore_tab": "Old World's Ores",
+    "itemGroup.skaven_technology": "Skaven Technology & Alchemy",
 
 
 

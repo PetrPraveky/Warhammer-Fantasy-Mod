@@ -10,6 +10,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.pravekypetr.wh.attributes.ModWeaponAttribute;
 import net.pravekypetr.wh.blocks.ModOreBlocks;
+import net.pravekypetr.wh.blocks.ModStationBlocks;
 import net.pravekypetr.wh.items.ModOreItems;
 import net.pravekypetr.wh.items.ModWeapons;
 import net.pravekypetr.wh.networking.ModMessages;
@@ -30,7 +31,12 @@ public class WH
         // Initiate items
         ModOreItems.register(modEventBus);
         ModWeapons.register(modEventBus);
+
+        // Initiate blocks
         ModOreBlocks.register(modEventBus);
+        ModStationBlocks.register(modEventBus);
+
+        // Initiate attributes
         ModWeaponAttribute.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);

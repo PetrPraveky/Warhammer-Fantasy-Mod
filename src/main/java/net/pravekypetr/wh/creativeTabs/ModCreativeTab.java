@@ -11,4 +11,10 @@ public class ModCreativeTab {
             return new ItemStack(ModOreItems.WARPSTONE.get());
         }
     };
+    public static final CreativeModeTab SKAVEN_TECHNOLOGY = new CreativeModeTab("skaven_technology") {
+        @Override
+        public ItemStack makeIcon() {
+            return new ItemStack(ModOreItems.WARPSTONE.get());
+        }
+    };
 }
