@@ -1,0 +1,19 @@
+{
+    "variants": {
+        "facing=north": {
+            "model": "wh:block/skaven_blast_furnace_upper"
+        },
+        "facing=south": {
+            "model": "wh:block/skaven_blast_furnace_upper",
+            "y": 180
+        },
+        "facing=west": {
+            "model": "wh:block/skaven_blast_furnace_upper",
+            "y": 270
+        },
+        "facing=east": {
+            "model": "wh:block/skaven_blast_furnace_upper",
+            "y": 90
+        }
+    }
+}
