@@ -1,4 +1,4 @@
-package net.pravekypetr.wh.itemInit;
+package net.pravekypetr.wh.itemInit.oldWorldWeapons;
 
 import java.util.List;
 import java.util.UUID;

@@ -11,7 +11,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.network.NetworkEvent;
 import net.pravekypetr.wh.damageSource.ModDamageSource;
-import net.pravekypetr.wh.itemInit.Longsword;
+import net.pravekypetr.wh.itemInit.oldWorldWeapons.Longsword;
 import net.minecraft.world.entity.EquipmentSlot;
 
 public class LongswordSlashC2S {

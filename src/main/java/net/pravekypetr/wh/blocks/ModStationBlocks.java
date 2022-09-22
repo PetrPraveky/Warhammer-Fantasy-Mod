@@ -15,8 +15,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.pravekypetr.wh.WH;
-import net.pravekypetr.wh.blocks.stations.SkavenBlastFurnace.SkavenBlastFurnaceBlock;
-import net.pravekypetr.wh.blocks.stations.SkavenBlastFurnace.SkavenBlastFurnaceUpper;
+import net.pravekypetr.wh.blocks.stations.skavenBlastFurnace.SkavenBlastFurnaceBlock;
+import net.pravekypetr.wh.blocks.stations.skavenBlastFurnace.SkavenBlastFurnaceUpper;
 import net.pravekypetr.wh.creativeTabs.ModCreativeTab;
 import net.pravekypetr.wh.items.ModOreItems;
 

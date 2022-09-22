@@ -7,17 +7,20 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.level.block.AirBlock;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.level.BlockEvent.EntityPlaceEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.pravekypetr.wh.WH;
-import net.pravekypetr.wh.itemInit.Dagger;
-import net.pravekypetr.wh.itemInit.Halbert;
-import net.pravekypetr.wh.itemInit.Rapier;
-import net.pravekypetr.wh.itemInit.Spear;
+import net.pravekypetr.wh.blocks.stations.skavenBlastFurnace.SkavenBlastFurnaceBlock;
 import net.pravekypetr.wh.damageSource.ModDamageSource;
+import net.pravekypetr.wh.itemInit.oldWorldWeapons.Dagger;
+import net.pravekypetr.wh.itemInit.oldWorldWeapons.Halbert;
+import net.pravekypetr.wh.itemInit.oldWorldWeapons.Rapier;
+import net.pravekypetr.wh.itemInit.oldWorldWeapons.Spear;
 
 @Mod.EventBusSubscriber(modid = WH.MOD_ID)
 public class ModEvents {
@@ -60,6 +63,7 @@ public class ModEvents {
             }
         } catch (Exception e) {}
     }
+
     @SubscribeEvent
     public static void rightClickOnEntity(PlayerInteractEvent event) {
         try {
@@ -78,5 +82,19 @@ public class ModEvents {
                 weapon.remover = true;
             }
         } catch (Exception e) {}
+    }
+
+    @SubscribeEvent
+    public static void placeBlockEvent(EntityPlaceEvent event) {
+        if (event.getPlacedBlock().getBlock() instanceof SkavenBlastFurnaceBlock) {
+            if ((event.getLevel().getBlockState(event.getPos().above()).getBlock() instanceof AirBlock) == false) {
+                event.setCanceled(true);
+                try {
+                    if (((Player)event.getEntity()).isCreative() == false) {
+                        
+                    }
+                } catch (Exception e) {}
+            }
+        }
     }
 }

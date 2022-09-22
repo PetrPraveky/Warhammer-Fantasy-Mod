@@ -11,6 +11,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.pravekypetr.wh.attributes.ModWeaponAttribute;
 import net.pravekypetr.wh.blocks.ModOreBlocks;
 import net.pravekypetr.wh.blocks.ModStationBlocks;
+import net.pravekypetr.wh.blocks.entities.SkavenBlockEntities;
 import net.pravekypetr.wh.items.ModOreItems;
 import net.pravekypetr.wh.items.ModWeapons;
 import net.pravekypetr.wh.networking.ModMessages;
@@ -38,6 +39,9 @@ public class WH
 
         // Initiate attributes
         ModWeaponAttribute.register(modEventBus);
+
+        // Blockentities
+        SkavenBlockEntities.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
 

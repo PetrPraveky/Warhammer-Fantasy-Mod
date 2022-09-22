@@ -1,59 +1,63 @@
-package net.pravekypetr.wh.itemInit;
+package net.pravekypetr.wh.itemInit.oldWorldWeapons;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Nullable;
 
-import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.ImmutableMultimap;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
+
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
+
+import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
+
 import net.pravekypetr.wh.attributes.ModWeaponAttribute;
 import net.pravekypetr.wh.networking.ModMessages;
-import net.pravekypetr.wh.networking.packet.HammerSlamC2S;
+import net.pravekypetr.wh.networking.packet.LongswordSlashC2S;
 
-public class Warhammer extends TieredItem {
+public class Longsword extends TieredItem {
     public final float attackDamage;
     public final float attackSpeed;
+    public final float cooldown;
     public final float aoeDamage;
     public final float aoeRadius;
-    public final float cooldown;
-    public final float reduction;
-    public final boolean heavy;
-    // public static float aoeDamage;
+
+    public boolean remover;
+
+    protected static final UUID ATTACK_REACH_MODIFIER = UUID.fromString("2f8f916c-bf09-11ec-9d64-0242ac120002");
 
     private Multimap<Attribute, AttributeModifier> map;
 
-    public Warhammer(Tier tier, int dmg, float speed, float cooldown, float radius, boolean heavy, Item.Properties properties) {
+    public Longsword(Tier tier, int dmg, float speed, Item.Properties properties) {
         super(tier, properties);
         this.attackDamage = (float)dmg+tier.getAttackDamageBonus();
         this.attackSpeed = speed;
-        this.aoeRadius = radius;
-        this.cooldown = cooldown;
-        this.reduction = 0.4f;
-        this.aoeDamage = (this.attackDamage+1)*(1f-this.reduction);
-        this.heavy = heavy;
+        this.cooldown = 20;
+        this.aoeDamage = 0.6f*(this.attackDamage+1);
+        this.aoeRadius = 4;
 
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", this.attackDamage, AttributeModifier.Operation.ADDITION));
@@ -68,11 +72,7 @@ public class Warhammer extends TieredItem {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
         if (Screen.hasShiftDown()) {
-            if (this.heavy) {
-                components.add(Component.translatable("wh.info.warhammer").withStyle(ChatFormatting.AQUA));
-            } else {
-                components.add(Component.translatable("wh.info.warhammer.one_handed").withStyle(ChatFormatting.AQUA));
-            }
+            components.add(Component.translatable("wh.info.longsword").withStyle(ChatFormatting.AQUA));
         } else {
             components.add(Component.translatable("wh.info.description").withStyle(ChatFormatting.YELLOW));
         }
@@ -87,21 +87,20 @@ public class Warhammer extends TieredItem {
     @Override
     public float getDestroySpeed(ItemStack p_43288_, BlockState p_43289_) {
         if (p_43289_.is(Blocks.COBWEB)) {
-        return 15.0F;
+           return 15.0F;
         } else {
-        Material material = p_43289_.getMaterial();
-        return material != Material.PLANT && material != Material.REPLACEABLE_PLANT && !p_43289_.is(BlockTags.LEAVES) && material != Material.VEGETABLE ? 1.0F : 1.5F;
+           Material material = p_43289_.getMaterial();
+           return material != Material.PLANT && material != Material.REPLACEABLE_PLANT && !p_43289_.is(BlockTags.LEAVES) && material != Material.VEGETABLE ? 1.0F : 1.5F;
         }
     }
-  
+
     @Override
     public boolean mineBlock(ItemStack p_43282_, Level p_43283_, BlockState p_43284_, BlockPos p_43285_, LivingEntity p_43286_) {
         if (p_43284_.getDestroySpeed(p_43283_, p_43285_) != 0.0F) {
-           p_43282_.hurtAndBreak(2, p_43286_, (p_43276_) -> {
-              p_43276_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
-           });
+            p_43282_.hurtAndBreak(2, p_43286_, (p_43276_) -> {
+                p_43276_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+            });
         }
-  
         return true;
     }
 
@@ -119,9 +118,16 @@ public class Warhammer extends TieredItem {
     }
 
     @Override
+    public boolean canPerformAction(ItemStack stack, net.minecraftforge.common.ToolAction toolAction) {
+       return net.minecraftforge.common.ToolActions.DEFAULT_SWORD_ACTIONS.contains(toolAction);
+    }
+
+    @Override
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
         if (!world.isClientSide()) {
-            ModMessages.sendToServer(new HammerSlamC2S());
+            ModMessages.sendToServer(new LongswordSlashC2S());
+            world.playSound((Player)null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_SWEEP, player.getSoundSource(), 1.0F, 1.0F);
+            player.sweepAttack();
             player.getCooldowns().addCooldown(this, (int)this.cooldown);
         }
         return super.use(world, player, hand);

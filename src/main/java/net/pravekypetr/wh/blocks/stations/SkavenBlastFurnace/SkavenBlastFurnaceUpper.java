@@ -1,4 +1,4 @@
-package net.pravekypetr.wh.blocks.stations.SkavenBlastFurnace;
+package net.pravekypetr.wh.blocks.stations.skavenBlastFurnace;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;

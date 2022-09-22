@@ -11,7 +11,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.network.NetworkEvent;
 import net.pravekypetr.wh.damageSource.ModDamageSource;
-import net.pravekypetr.wh.itemInit.Warhammer;
+import net.pravekypetr.wh.itemInit.oldWorldWeapons.Warhammer;
 import net.minecraft.world.entity.EquipmentSlot;
 
 public class HammerSlamC2S {
