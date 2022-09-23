@@ -1,6 +1,8 @@
 package net.pravekypetr.wh;
 
 import com.mojang.logging.LogUtils;
+
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -12,9 +14,12 @@ import net.pravekypetr.wh.attributes.ModWeaponAttribute;
 import net.pravekypetr.wh.blocks.ModOreBlocks;
 import net.pravekypetr.wh.blocks.ModStationBlocks;
 import net.pravekypetr.wh.blocks.entities.SkavenBlockEntities;
+import net.pravekypetr.wh.items.ModMetalItems;
 import net.pravekypetr.wh.items.ModOreItems;
 import net.pravekypetr.wh.items.ModWeapons;
 import net.pravekypetr.wh.networking.ModMessages;
+import net.pravekypetr.wh.screen.ModMenuTypes;
+import net.pravekypetr.wh.screen.skavenBlastFurnace.SkavenBlastFurnaceScreen;
 
 import org.slf4j.Logger;
 
@@ -31,6 +36,7 @@ public class WH
 
         // Initiate items
         ModOreItems.register(modEventBus);
+        ModMetalItems.register(modEventBus);
         ModWeapons.register(modEventBus);
 
         // Initiate blocks
@@ -42,6 +48,9 @@ public class WH
 
         // Blockentities
         SkavenBlockEntities.register(modEventBus);
+
+        // MENUS
+        ModMenuTypes.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
 
@@ -60,7 +69,7 @@ public class WH
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event)
         {
-
+            MenuScreens.register(ModMenuTypes.SKAVEN_BLAST_FURNACE_MENU.get(), SkavenBlastFurnaceScreen::new);
         }
     }
 }
