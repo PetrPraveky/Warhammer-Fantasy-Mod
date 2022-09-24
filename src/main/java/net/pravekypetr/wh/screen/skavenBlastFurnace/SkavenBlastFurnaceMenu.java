@@ -6,13 +6,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.pravekypetr.wh.blocks.ModStationBlocks;
@@ -39,10 +37,10 @@ public class SkavenBlastFurnaceMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
         this.blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler -> {
-            this.addSlot(new SlotItemHandler(handler, 0, 8, 17)); // INPUT 1
-            this.addSlot(new SlotItemHandler(handler, 1, 88, 35)); // OUTPUT
+            this.addSlot(new SlotItemHandler(handler, 0, 18, 53)); // POWER
+            this.addSlot(new SlotItemHandler(handler, 1, 8, 17)); // INPUT 1
             this.addSlot(new SlotItemHandler(handler, 2, 28, 17)); // INPUT 2
-            this.addSlot(new SlotItemHandler(handler, 3, 18, 53)); // POWER
+            this.addSlot(new SlotItemHandler(handler, 3, 88, 35)); // OUTPUT
             this.addSlot(new SlotItemHandler(handler, 4, 132, 8)); // FLUID INTAKE
             this.addSlot(new SlotItemHandler(handler, 5, 132, 62)); // FLUID OUTTAKE
         });

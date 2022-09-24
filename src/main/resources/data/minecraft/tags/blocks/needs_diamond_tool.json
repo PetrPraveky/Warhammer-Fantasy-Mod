@@ -1,0 +1,8 @@
+{
+    "replace": false,
+    "values": [
+        "wh:warpstone_block",
+        "wh:warpstone_ore",
+        "wh:deepslate_warpstone_ore"
+    ]
+  }

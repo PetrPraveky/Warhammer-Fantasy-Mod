@@ -97,4 +97,9 @@ public class ModEvents {
             }
         }
     }
+
+    /*@SubscribeEvent
+    public static void breakBlockEvent(BreakEvent event) {
+        
+    }*/
 }

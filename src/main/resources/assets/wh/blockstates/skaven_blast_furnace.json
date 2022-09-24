@@ -1,18 +1,63 @@
 {
     "variants": {
-        "facing=north": {
+        "facing=north,down=true,unlit=true": {
             "model": "wh:block/skaven_blast_furnace"
         },
-        "facing=south": {
+        "facing=south,down=true,unlit=true": {
             "model": "wh:block/skaven_blast_furnace",
             "y": 180
         },
-        "facing=west": {
+        "facing=west,down=true,unlit=true": {
             "model": "wh:block/skaven_blast_furnace",
             "y": 270
         },
-        "facing=east": {
+        "facing=east,down=true,unlit=true": {
             "model": "wh:block/skaven_blast_furnace",
+            "y": 90
+        },
+        "facing=north,down=false,unlit=true": {
+            "model": "wh:block/skaven_blast_furnace_upper"
+        },
+        "facing=south,down=false,unlit=true": {
+            "model": "wh:block/skaven_blast_furnace_upper",
+            "y": 180
+        },
+        "facing=west,down=false,unlit=true": {
+            "model": "wh:block/skaven_blast_furnace_upper",
+            "y": 270
+        },
+        "facing=east,down=false,unlit=true": {
+            "model": "wh:block/skaven_blast_furnace_upper",
+            "y": 90
+        },
+        "facing=north,down=true,unlit=false": {
+            "model": "wh:block/skaven_blast_furnace_lit"
+        },
+        "facing=south,down=true,unlit=false": {
+            "model": "wh:block/skaven_blast_furnace_lit",
+            "y": 180
+        },
+        "facing=west,down=true,unlit=false": {
+            "model": "wh:block/skaven_blast_furnace_lit",
+            "y": 270
+        },
+        "facing=east,down=true,unlit=false": {
+            "model": "wh:block/skaven_blast_furnace_lit",
+            "y": 90
+        },
+        "facing=north,down=false,unlit=false": {
+            "model": "wh:block/skaven_blast_furnace_upper"
+        },
+        "facing=south,down=false,unlit=false": {
+            "model": "wh:block/skaven_blast_furnace_upper",
+            "y": 180
+        },
+        "facing=west,down=false,unlit=false": {
+            "model": "wh:block/skaven_blast_furnace_upper",
+            "y": 270
+        },
+        "facing=east,down=false,unlit=false": {
+            "model": "wh:block/skaven_blast_furnace_upper",
             "y": 90
         }
     }

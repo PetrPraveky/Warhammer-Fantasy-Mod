@@ -5,8 +5,10 @@ import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -18,7 +20,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -26,12 +27,12 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.pravekypetr.wh.blocks.entities.SkavenBlockEntities;
+import net.pravekypetr.wh.blocks.stations.skavenBlastFurnace.SkavenBlastFurnaceBlock;
 import net.pravekypetr.wh.items.ModMetalItems;
 import net.pravekypetr.wh.screen.skavenBlastFurnace.SkavenBlastFurnaceMenu;
+import net.minecraft.world.level.block.CampfireBlock;
 
 public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuProvider {
-
-
     private final ItemStackHandler itemHandler = new ItemStackHandler(6) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -46,6 +47,8 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
     // private int steelProgress = 78;
     // private int defaultSmeltProsgress = 70;
     private int maxProgress = 70;
+
+    private int rotation = 0;
 
     public SkavenBlastFurnaceBlockEntity(BlockPos pos, BlockState state) {
         super(SkavenBlockEntities.SKAVEN_BLAST_FURNACE.get(), pos, state);
@@ -122,28 +125,37 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
     }
 
     public void drops() {
-        SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots());
+        SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots()+1);
         for (int i = 0; i < itemHandler.getSlots(); i++) {
             inventory.setItem(i, itemHandler.getStackInSlot(i));
         }
+        // inventory.setItem(itemHandler.getSlots(),new ItemStack( ModStationBlocks.SKAVEN_BLAST_FURNACE.get().asItem()));
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, SkavenBlastFurnaceBlockEntity pEntity) {
         if (level.isClientSide()) {
+            if (pEntity.rotation % 8 == 0 && hasRecipe(pEntity)) {
+                RandomSource randomsource = level.getRandom();
+                level.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE, true, (double)pos.getX() + 0.5D + randomsource.nextDouble() / 3.0D * (double)(randomsource.nextBoolean() ? 1 : -1), (double)pos.above().getY() + randomsource.nextDouble() + randomsource.nextDouble(), (double)pos.getZ() + 0.5D + randomsource.nextDouble() / 3.0D * (double)(randomsource.nextBoolean() ? 1 : -1), 0.0D, 0.07D, 0.0D);
+                level.addParticle(ParticleTypes.SMOKE, (double)pos.getX() + 0.5D + randomsource.nextDouble() / 4.0D * (double)(randomsource.nextBoolean() ? 1 : -1), (double)pos.getY() + 0.4D, (double)pos.getZ() + 0.5D + randomsource.nextDouble() / 4.0D * (double)(randomsource.nextBoolean() ? 1 : -1), 0.0D, 0.005D, 0.0D);
+            }
             return;
         }
 
         if (hasRecipe(pEntity)) {
             pEntity.progress++;
             setChanged(level, pos, state);
+            level.setBlock(pos, state.setValue(SkavenBlastFurnaceBlock.UNLIT, false), 3);
             if (pEntity.progress >= pEntity.maxProgress) {
                 craftItem(pEntity);
             }
         } else {
             pEntity.resetProgress();
+            level.setBlock(pos, state.setValue(SkavenBlastFurnaceBlock.UNLIT, true), 3);
             setChanged(level, pos, state);
         }
+        pEntity.rotation++;
     }
 
     private void resetProgress() {

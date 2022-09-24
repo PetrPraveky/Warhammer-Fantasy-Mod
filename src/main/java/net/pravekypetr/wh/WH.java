@@ -3,6 +3,9 @@ package net.pravekypetr.wh;
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -14,6 +17,7 @@ import net.pravekypetr.wh.attributes.ModWeaponAttribute;
 import net.pravekypetr.wh.blocks.ModOreBlocks;
 import net.pravekypetr.wh.blocks.ModStationBlocks;
 import net.pravekypetr.wh.blocks.entities.SkavenBlockEntities;
+import net.pravekypetr.wh.blocks.stations.skavenBlastFurnace.SkavenBlastFurnaceUpper;
 import net.pravekypetr.wh.items.ModMetalItems;
 import net.pravekypetr.wh.items.ModOreItems;
 import net.pravekypetr.wh.items.ModWeapons;
@@ -70,6 +74,7 @@ public class WH
         public static void onClientSetup(FMLClientSetupEvent event)
         {
             MenuScreens.register(ModMenuTypes.SKAVEN_BLAST_FURNACE_MENU.get(), SkavenBlastFurnaceScreen::new);
+            // ItemBlockRenderTypes.setRenderLayer(ModStationBlocks.SKAVEN_BLAST_FURNACE_UPPER.get(), RenderType.translucent());
         }
     }
 }

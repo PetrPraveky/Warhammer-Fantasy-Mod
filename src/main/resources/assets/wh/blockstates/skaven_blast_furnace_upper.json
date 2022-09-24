@@ -1,18 +1,18 @@
 {
     "variants": {
         "facing=north": {
-            "model": "wh:block/skaven_blast_furnace_upper"
+            "model": "wh:block/skaven_blast_furnace_lit"
         },
         "facing=south": {
-            "model": "wh:block/skaven_blast_furnace_upper",
+            "model": "wh:block/skaven_blast_furnace_lit",
             "y": 180
         },
         "facing=west": {
-            "model": "wh:block/skaven_blast_furnace_upper",
+            "model": "wh:block/skaven_blast_furnace_lit",
             "y": 270
         },
         "facing=east": {
-            "model": "wh:block/skaven_blast_furnace_upper",
+            "model": "wh:block/skaven_blast_furnace_lit",
             "y": 90
         }
     }

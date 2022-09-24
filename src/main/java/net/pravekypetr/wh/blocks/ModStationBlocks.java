@@ -16,7 +16,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.pravekypetr.wh.WH;
 import net.pravekypetr.wh.blocks.stations.skavenBlastFurnace.SkavenBlastFurnaceBlock;
-import net.pravekypetr.wh.blocks.stations.skavenBlastFurnace.SkavenBlastFurnaceUpper;
 import net.pravekypetr.wh.creativeTabs.ModCreativeTab;
 import net.pravekypetr.wh.items.ModOreItems;
 
@@ -24,11 +23,12 @@ public class ModStationBlocks {
     public static final DeferredRegister<Block> STATIONBLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, WH.MOD_ID);
 
     public static final RegistryObject<Block> SKAVEN_BLAST_FURNACE = registerBlock("skaven_blast_furnace",
-    () -> new SkavenBlastFurnaceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_BLACK).strength(6f).sound(SoundType.STONE).requiresCorrectToolForDrops().noOcclusion()),
+    () -> new SkavenBlastFurnaceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_BLACK)
+    .strength(2f).sound(SoundType.STONE).requiresCorrectToolForDrops().noOcclusion().lightLevel(state -> state.getValue(SkavenBlastFurnaceBlock.UNLIT) ? 0 : 15)),
     ModCreativeTab.SKAVEN_TECHNOLOGY);
 
-    public static final RegistryObject<Block> SKAVEN_BLAST_FURNACE_UPPER = registerBlock("skaven_blast_furnace_upper",
-    () -> new SkavenBlastFurnaceUpper(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_BLACK).strength(6f).sound(SoundType.STONE).requiresCorrectToolForDrops().noOcclusion()));
+    // public static final RegistryObject<Block> SKAVEN_BLAST_FURNACE_UPPER = registerBlock("skaven_blast_furnace_upper",
+    // () -> new SkavenBlastFurnaceUpper(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_BLACK).strength(6f).sound(SoundType.STONE).requiresCorrectToolForDrops().noOcclusion()));
 
     // Register block
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab) {
