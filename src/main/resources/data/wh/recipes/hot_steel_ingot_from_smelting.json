@@ -1,0 +1,12 @@
+{
+    "group": "wh",
+    "type": "wh:blast_furnace_smelting",
+    "base": [
+        {
+            "item": "minecraft:raw_iron"
+        }
+    ],
+    "output": {
+        "item": "wh:hot_iron_ingot"
+    }
+}

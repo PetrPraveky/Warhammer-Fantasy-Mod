@@ -22,6 +22,7 @@ import net.pravekypetr.wh.items.ModMetalItems;
 import net.pravekypetr.wh.items.ModOreItems;
 import net.pravekypetr.wh.items.ModWeapons;
 import net.pravekypetr.wh.networking.ModMessages;
+import net.pravekypetr.wh.recipe.ModRecipes;
 import net.pravekypetr.wh.screen.ModMenuTypes;
 import net.pravekypetr.wh.screen.skavenBlastFurnace.SkavenBlastFurnaceScreen;
 
@@ -38,23 +39,26 @@ public class WH
     {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        // Initiate items
+        // ITEMS
         ModOreItems.register(modEventBus);
         ModMetalItems.register(modEventBus);
         ModWeapons.register(modEventBus);
 
-        // Initiate blocks
+        // BLOCKS
         ModOreBlocks.register(modEventBus);
         ModStationBlocks.register(modEventBus);
 
-        // Initiate attributes
+        // ATTRIBUTES
         ModWeaponAttribute.register(modEventBus);
 
-        // Blockentities
+        // BLOCKENTITIES
         SkavenBlockEntities.register(modEventBus);
 
         // MENUS
         ModMenuTypes.register(modEventBus);
+
+        // RECIPES
+        ModRecipes.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
 

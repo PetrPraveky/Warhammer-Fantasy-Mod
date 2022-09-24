@@ -17,6 +17,8 @@ import net.pravekypetr.wh.blocks.ModStationBlocks;
 import net.pravekypetr.wh.blocks.stations.skavenBlastFurnace.entity.SkavenBlastFurnaceBlockEntity;
 import net.pravekypetr.wh.screen.ModMenuTypes;
 
+
+
 public class SkavenBlastFurnaceMenu extends AbstractContainerMenu {
     public final SkavenBlastFurnaceBlockEntity blockEntity;
     private final Level level;

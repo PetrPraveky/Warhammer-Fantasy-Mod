@@ -1,5 +1,7 @@
 package net.pravekypetr.wh.blocks.stations.skavenBlastFurnace.entity;
 
+import java.util.Optional;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -8,6 +10,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
@@ -18,6 +21,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BlastFurnaceBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -29,8 +33,8 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.pravekypetr.wh.blocks.entities.SkavenBlockEntities;
 import net.pravekypetr.wh.blocks.stations.skavenBlastFurnace.SkavenBlastFurnaceBlock;
 import net.pravekypetr.wh.items.ModMetalItems;
+import net.pravekypetr.wh.recipe.BlastFurnaceRecipe;
 import net.pravekypetr.wh.screen.skavenBlastFurnace.SkavenBlastFurnaceMenu;
-import net.minecraft.world.level.block.CampfireBlock;
 
 public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuProvider {
     private final ItemStackHandler itemHandler = new ItemStackHandler(6) {
@@ -49,6 +53,7 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
     private int maxProgress = 70;
 
     private int rotation = 0;
+    private boolean hasRecipe = false;
 
     public SkavenBlastFurnaceBlockEntity(BlockPos pos, BlockState state) {
         super(SkavenBlockEntities.SKAVEN_BLAST_FURNACE.get(), pos, state);
@@ -129,56 +134,72 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
         for (int i = 0; i < itemHandler.getSlots(); i++) {
             inventory.setItem(i, itemHandler.getStackInSlot(i));
         }
-        // inventory.setItem(itemHandler.getSlots(),new ItemStack( ModStationBlocks.SKAVEN_BLAST_FURNACE.get().asItem()));
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, SkavenBlastFurnaceBlockEntity pEntity) {
         if (level.isClientSide()) {
-            if (pEntity.rotation % 8 == 0 && hasRecipe(pEntity)) {
+            if (pEntity.rotation % 20 == 0 && state.getValue(SkavenBlastFurnaceBlock.UNLIT) == false) {
                 RandomSource randomsource = level.getRandom();
-                level.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE, true, (double)pos.getX() + 0.5D + randomsource.nextDouble() / 3.0D * (double)(randomsource.nextBoolean() ? 1 : -1), (double)pos.above().getY() + randomsource.nextDouble() + randomsource.nextDouble(), (double)pos.getZ() + 0.5D + randomsource.nextDouble() / 3.0D * (double)(randomsource.nextBoolean() ? 1 : -1), 0.0D, 0.07D, 0.0D);
+                level.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, true, (double)pos.getX() + 0.5D + randomsource.nextDouble() / 3.0D * (double)(randomsource.nextBoolean() ? 1 : -1), (double)pos.above().getY() + randomsource.nextDouble() + randomsource.nextDouble(), (double)pos.getZ() + 0.5D + randomsource.nextDouble() / 3.0D * (double)(randomsource.nextBoolean() ? 1 : -1), 0.0D, 0.07D, 0.0D);
                 level.addParticle(ParticleTypes.SMOKE, (double)pos.getX() + 0.5D + randomsource.nextDouble() / 4.0D * (double)(randomsource.nextBoolean() ? 1 : -1), (double)pos.getY() + 0.4D, (double)pos.getZ() + 0.5D + randomsource.nextDouble() / 4.0D * (double)(randomsource.nextBoolean() ? 1 : -1), 0.0D, 0.005D, 0.0D);
             }
             return;
         }
-
+        
         if (hasRecipe(pEntity)) {
             pEntity.progress++;
+
             setChanged(level, pos, state);
             level.setBlock(pos, state.setValue(SkavenBlastFurnaceBlock.UNLIT, false), 3);
             if (pEntity.progress >= pEntity.maxProgress) {
                 craftItem(pEntity);
             }
+
+            pEntity.rotation++;
         } else {
+            pEntity.hasRecipe = false;
             pEntity.resetProgress();
             level.setBlock(pos, state.setValue(SkavenBlastFurnaceBlock.UNLIT, true), 3);
             setChanged(level, pos, state);
         }
-        pEntity.rotation++;
     }
 
     private void resetProgress() {
         this.progress = 0;
+        this.rotation = 0;
     }
 
     private static void craftItem(SkavenBlastFurnaceBlockEntity entity) {
-        if (hasRecipe(entity)) {
-            entity.itemHandler.extractItem(1, 1, false);
-            entity.itemHandler.setStackInSlot(2, new ItemStack(ModMetalItems.HOT_STEEL_INGOT.get(), entity.itemHandler.getStackInSlot(2).getCount()+1));
-            entity.resetProgress();
-        }
-    }
-
-    private static boolean hasRecipe(SkavenBlastFurnaceBlockEntity entity) {
+        Level level = entity.level;
         SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlots());
         for (int i = 0; i < entity.itemHandler.getSlots(); i++) {
             inventory.setItem(i, entity.itemHandler.getStackInSlot(i));
         }
 
-        boolean hasIronOreInFirstSlot = entity.itemHandler.getStackInSlot(1).getItem() == Blocks.IRON_ORE.asItem();
+        Optional<BlastFurnaceRecipe> recipe = level.getRecipeManager().getRecipeFor(BlastFurnaceRecipe.Type.INSTANCE, inventory, level);
 
-        return hasIronOreInFirstSlot && canInsertAmountIntoOutputSlot(inventory) &&canInsertItemIntoOutputSlot(inventory, new ItemStack(Blocks.IRON_ORE.asItem(), 1));
+        if (hasRecipe(entity)) {
+            entity.itemHandler.extractItem(1, 1, false);
+            // entity.itemHandler.extractItem(2, 1, false);
+            entity.itemHandler.setStackInSlot(2, new ItemStack(recipe.get().getResultItem().getItem(), entity.itemHandler.getStackInSlot(2).getCount()+1));
+            entity.resetProgress();
+        }
+    }
+
+    private static boolean hasRecipe(SkavenBlastFurnaceBlockEntity entity) {
+        Level level = entity.level;
+        SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlots());
+        for (int i = 0; i < entity.itemHandler.getSlots(); i++) {
+            inventory.setItem(i, entity.itemHandler.getStackInSlot(i));
+        }
+
+        Optional<BlastFurnaceRecipe> recipe = level.getRecipeManager().getRecipeFor(BlastFurnaceRecipe.Type.INSTANCE, inventory, level);
+
+        // System.out.println(recipe.isPresent());
+        System.out.println(recipe.isPresent());
+
+        return recipe.isPresent() && canInsertAmountIntoOutputSlot(inventory) &&canInsertItemIntoOutputSlot(inventory, recipe.get().getResultItem());
     }
 
     private static boolean canInsertItemIntoOutputSlot(SimpleContainer inventory, ItemStack itemStack) {
