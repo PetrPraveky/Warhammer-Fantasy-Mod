@@ -51,7 +51,7 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
 
     protected final ContainerData data;
     private int progress = 0;
-    private int maxProgress = 400;
+    private int maxProgress = 100;
 
     private int fuel = 0;
 
@@ -66,6 +66,7 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
                 return switch (index) {
                     case 0 -> SkavenBlastFurnaceBlockEntity.this.progress;
                     case 1 -> SkavenBlastFurnaceBlockEntity.this.maxProgress;
+                    case 2 -> SkavenBlastFurnaceBlockEntity.this.fuel;
                     default -> 0;
                 };
             }
@@ -75,12 +76,13 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
                 switch(index) {
                     case 0 -> SkavenBlastFurnaceBlockEntity.this.progress = value;
                     case 1 -> SkavenBlastFurnaceBlockEntity.this.maxProgress = value;
+                    case 2 -> SkavenBlastFurnaceBlockEntity.this.fuel = value;
                 };
             }
 
             @Override
             public int getCount() {
-                return 2;
+                return 3;
             }
         };
         
@@ -151,6 +153,8 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
         }
         
         if (pEntity.fuel > 0) {
+            // blit(pPoseStack, x+19, y+37, 176, 0, 14, menu.getScaledFuel(inv.getItem(0)));
+
             pEntity.rotation++;
             pEntity.fuel--;
         }
@@ -172,6 +176,7 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
             pEntity.hasRecipe = false;
             pEntity.resetProgress();
             if (pEntity.fuel == 0) {
+
                 level.setBlock(pos, state.setValue(SkavenBlastFurnaceBlock.UNLIT, true), 3);
             }
             setChanged(level, pos, state);

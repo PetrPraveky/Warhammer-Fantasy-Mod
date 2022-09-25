@@ -13,8 +13,11 @@ import net.pravekypetr.wh.WH;
 public class SkavenBlastFurnaceScreen extends AbstractContainerScreen<SkavenBlastFurnaceMenu> {
     public static final ResourceLocation TEXTURE = new ResourceLocation(WH.MOD_ID, "textures/gui/blast_furnace.png");
 
+    private static Inventory inv;
+
     public SkavenBlastFurnaceScreen(SkavenBlastFurnaceMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, component);
+        inv = inventory;
     }
 
     @Override
@@ -34,11 +37,18 @@ public class SkavenBlastFurnaceScreen extends AbstractContainerScreen<SkavenBlas
         this.blit(pPoseStack, x, y, 0, 0, imageWidth, imageHeight);
 
         renderProgressArrow(pPoseStack, x, y);
+        renderFuel(pPoseStack, x, y);
     }
 
     private void renderProgressArrow(PoseStack pPoseStack, int x, int y) {
-        if (menu.isCrafint()) {
+        if (menu.isCrafing()) {
             blit(pPoseStack, x+51, y+34, 176, 14, menu.getScaledProgress(), 17);
+        }
+    }
+
+    private void renderFuel(PoseStack pPoseStack, int x, int y) {
+        if (menu.isBurning()) {
+            blit(pPoseStack, x+19, y+37, 14, 14, 14, menu.getScaledFuel(inv.getItem(0)));
         }
     }
 

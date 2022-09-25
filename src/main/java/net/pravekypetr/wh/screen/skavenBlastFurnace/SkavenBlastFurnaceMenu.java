@@ -11,10 +11,12 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.pravekypetr.wh.blocks.ModStationBlocks;
 import net.pravekypetr.wh.blocks.stations.skavenBlastFurnace.entity.SkavenBlastFurnaceBlockEntity;
+import net.pravekypetr.wh.recipe.BlastFurnaceRecipe;
 import net.pravekypetr.wh.screen.ModMenuTypes;
 
 
@@ -25,7 +27,7 @@ public class SkavenBlastFurnaceMenu extends AbstractContainerMenu {
     private final ContainerData data;
 
     public SkavenBlastFurnaceMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        this(id, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
+        this(id, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(3));
     }
 
     public SkavenBlastFurnaceMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
@@ -50,14 +52,26 @@ public class SkavenBlastFurnaceMenu extends AbstractContainerMenu {
         addDataSlots(data);
     }
 
-    public boolean isCrafint() {
+    public boolean isCrafing() {
         return data.get(0) > 0;
+    }
+
+    public boolean isBurning() {
+        return data.get(2) > 0;
     }
 
     public int getScaledProgress() {
         int progress = this.data.get(0);
         int maxProgress = this.data.get(1);
         int progressArrowSize = 24;
+
+        return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
+    }
+
+    public int getScaledFuel(ItemStack fuel) {
+        int maxProgress = ForgeHooks.getBurnTime(fuel, BlastFurnaceRecipe.Type.INSTANCE);
+        int progress = this.data.get(2);
+        int progressArrowSize = -14;
 
         return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
     }
