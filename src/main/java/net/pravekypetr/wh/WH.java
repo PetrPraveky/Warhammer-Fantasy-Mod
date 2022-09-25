@@ -60,8 +60,8 @@ public class WH
         // RECIPES
         ModRecipes.register(modEventBus);
 
+        
         modEventBus.addListener(this::commonSetup);
-
         MinecraftForge.EVENT_BUS.register(this);
     }
 

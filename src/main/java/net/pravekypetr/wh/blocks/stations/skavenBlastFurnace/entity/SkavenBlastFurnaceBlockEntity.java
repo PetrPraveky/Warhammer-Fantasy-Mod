@@ -181,8 +181,8 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
 
         if (hasRecipe(entity)) {
             entity.itemHandler.extractItem(1, 1, false);
-            // entity.itemHandler.extractItem(2, 1, false);
-            entity.itemHandler.setStackInSlot(2, new ItemStack(recipe.get().getResultItem().getItem(), entity.itemHandler.getStackInSlot(2).getCount()+1));
+            entity.itemHandler.extractItem(2, 1, false);
+            entity.itemHandler.setStackInSlot(3, new ItemStack(recipe.get().getResultItem().getItem(), entity.itemHandler.getStackInSlot(3).getCount()+1));
             entity.resetProgress();
         }
     }
@@ -196,17 +196,14 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
 
         Optional<BlastFurnaceRecipe> recipe = level.getRecipeManager().getRecipeFor(BlastFurnaceRecipe.Type.INSTANCE, inventory, level);
 
-        // System.out.println(recipe.isPresent());
-        System.out.println(recipe.isPresent());
-
         return recipe.isPresent() && canInsertAmountIntoOutputSlot(inventory) &&canInsertItemIntoOutputSlot(inventory, recipe.get().getResultItem());
     }
 
     private static boolean canInsertItemIntoOutputSlot(SimpleContainer inventory, ItemStack itemStack) {
-        return inventory.getItem(2).getItem() == itemStack.getItem() || inventory.getItem(2).isEmpty();
+        return inventory.getItem(3).getItem() == itemStack.getItem() || inventory.getItem(3).isEmpty();
     }
 
     private static boolean canInsertAmountIntoOutputSlot(SimpleContainer inventory) {
-        return inventory.getItem(2).getMaxStackSize() > inventory.getItem(2).getCount();
+        return inventory.getItem(3).getMaxStackSize() > inventory.getItem(3).getCount();
     }
 }
