@@ -18,6 +18,7 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.AbstractFurnaceMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -25,6 +26,7 @@ import net.minecraft.world.level.block.BlastFurnaceBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -35,6 +37,7 @@ import net.pravekypetr.wh.blocks.stations.skavenBlastFurnace.SkavenBlastFurnaceB
 import net.pravekypetr.wh.items.ModMetalItems;
 import net.pravekypetr.wh.recipe.BlastFurnaceRecipe;
 import net.pravekypetr.wh.screen.skavenBlastFurnace.SkavenBlastFurnaceMenu;
+// import net.minecraft.util.datafix.fixes.FurnaceRecipeFix;
 
 public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuProvider {
     private final ItemStackHandler itemHandler = new ItemStackHandler(6) {
@@ -48,9 +51,9 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
 
     protected final ContainerData data;
     private int progress = 0;
-    // private int steelProgress = 78;
-    // private int defaultSmeltProsgress = 70;
-    private int maxProgress = 70;
+    private int maxProgress = 400;
+
+    private int fuel = 0;
 
     private int rotation = 0;
     private boolean hasRecipe = false;
@@ -147,7 +150,17 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
             return;
         }
         
-        if (hasRecipe(pEntity)) {
+        if (pEntity.fuel > 0) {
+            pEntity.rotation++;
+            pEntity.fuel--;
+        }
+
+        if (hasRecipe(pEntity) && !pEntity.itemHandler.getStackInSlot(0).isEmpty() || hasRecipe(pEntity) && pEntity.fuel > 0) {
+            if (ForgeHooks.getBurnTime(pEntity.itemHandler.getStackInSlot(0), BlastFurnaceRecipe.Type.INSTANCE) > 0 && pEntity.fuel == 0) {
+                pEntity.itemHandler.extractItem(0, 1, false);
+                pEntity.fuel = ForgeHooks.getBurnTime(pEntity.itemHandler.getStackInSlot(0), BlastFurnaceRecipe.Type.INSTANCE);
+            }
+
             pEntity.progress++;
 
             setChanged(level, pos, state);
@@ -155,12 +168,12 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
             if (pEntity.progress >= pEntity.maxProgress) {
                 craftItem(pEntity);
             }
-
-            pEntity.rotation++;
         } else {
             pEntity.hasRecipe = false;
             pEntity.resetProgress();
-            level.setBlock(pos, state.setValue(SkavenBlastFurnaceBlock.UNLIT, true), 3);
+            if (pEntity.fuel == 0) {
+                level.setBlock(pos, state.setValue(SkavenBlastFurnaceBlock.UNLIT, true), 3);
+            }
             setChanged(level, pos, state);
         }
     }
@@ -196,7 +209,7 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
 
         Optional<BlastFurnaceRecipe> recipe = level.getRecipeManager().getRecipeFor(BlastFurnaceRecipe.Type.INSTANCE, inventory, level);
 
-        return recipe.isPresent() && canInsertAmountIntoOutputSlot(inventory) &&canInsertItemIntoOutputSlot(inventory, recipe.get().getResultItem());
+        return recipe.isPresent() && canInsertAmountIntoOutputSlot(inventory) && canInsertItemIntoOutputSlot(inventory, recipe.get().getResultItem());
     }
 
     private static boolean canInsertItemIntoOutputSlot(SimpleContainer inventory, ItemStack itemStack) {

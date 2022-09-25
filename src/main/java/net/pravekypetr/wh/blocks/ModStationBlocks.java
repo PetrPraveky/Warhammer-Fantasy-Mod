@@ -16,6 +16,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.pravekypetr.wh.WH;
 import net.pravekypetr.wh.blocks.stations.skavenBlastFurnace.SkavenBlastFurnaceBlock;
+import net.pravekypetr.wh.blocks.stations.skavenCastingBarrel.SkavenCastingBarrelBlock;
 import net.pravekypetr.wh.creativeTabs.ModCreativeTab;
 import net.pravekypetr.wh.items.ModOreItems;
 
@@ -25,6 +26,11 @@ public class ModStationBlocks {
     public static final RegistryObject<Block> SKAVEN_BLAST_FURNACE = registerBlock("skaven_blast_furnace",
     () -> new SkavenBlastFurnaceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_BLACK)
     .strength(2f).sound(SoundType.STONE).requiresCorrectToolForDrops().noOcclusion().lightLevel(state -> state.getValue(SkavenBlastFurnaceBlock.UNLIT) ? 0 : 15)),
+    ModCreativeTab.SKAVEN_TECHNOLOGY);
+
+    public static final RegistryObject<Block> SKAVEN_CASTING_BARREL = registerBlock("skaven_casting_barrel",
+    () -> new SkavenCastingBarrelBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_BLACK)
+    .strength(2f).sound(SoundType.STONE).requiresCorrectToolForDrops().noOcclusion()),
     ModCreativeTab.SKAVEN_TECHNOLOGY);
 
     // public static final RegistryObject<Block> SKAVEN_BLAST_FURNACE_UPPER = registerBlock("skaven_blast_furnace_upper",

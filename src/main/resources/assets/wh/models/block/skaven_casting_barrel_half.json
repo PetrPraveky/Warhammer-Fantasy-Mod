@@ -3,11 +3,11 @@
 	"textures": {
 		"0": "wh:block/skaven_blast_furnace_tile",
 		"1": "wh:block/skaven_blast_furnace_binder_1",
-		"2": "minecraft_block/spruce_planks",
-		"3": "minecraft_block/spruce_trapdoor",
+		"2": "minecraft:block/spruce_planks",
+		"3": "minecraft:block/spruce_trapdoor",
 		"4": "wh:block/skaven_blast_furnace_binder_2",
 		"5": "wh:block/water",
-		"particle": "wh:blok/skaven_blastfurnace_tile"
+		"particle": "wh:block/skaven_blast_furnace_tile"
 	},
 	"elements": [
 		{
