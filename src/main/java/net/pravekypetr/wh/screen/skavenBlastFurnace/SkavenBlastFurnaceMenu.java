@@ -69,11 +69,14 @@ public class SkavenBlastFurnaceMenu extends AbstractContainerMenu {
     }
 
     public int getScaledFuel(ItemStack fuel) {
-        int maxProgress = ForgeHooks.getBurnTime(fuel, BlastFurnaceRecipe.Type.INSTANCE);
-        int progress = this.data.get(2);
-        int progressArrowSize = -14;
+        double maxProgress = ForgeHooks.getBurnTime(fuel, BlastFurnaceRecipe.Type.INSTANCE)*8;
+        double progress = maxProgress-this.data.get(2);
 
-        return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
+        double p = (progress/maxProgress);
+        double fin = p*13;
+
+        return maxProgress != 0 && progress != 0 ? (int)Math.floor(fin) : 0;
+        // return 0;
     }
 
     // CREDIT GOES TO: diesieben07 | https://github.com/diesieben07/SevenCommons

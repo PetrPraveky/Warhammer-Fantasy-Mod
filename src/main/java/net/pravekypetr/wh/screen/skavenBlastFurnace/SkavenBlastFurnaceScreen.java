@@ -48,7 +48,7 @@ public class SkavenBlastFurnaceScreen extends AbstractContainerScreen<SkavenBlas
 
     private void renderFuel(PoseStack pPoseStack, int x, int y) {
         if (menu.isBurning()) {
-            blit(pPoseStack, x+19, y+37, 14, 14, 14, menu.getScaledFuel(inv.getItem(0)));
+            blit(pPoseStack, x+19, y+37+menu.getScaledFuel(inv.getItem(0)), 176, menu.getScaledFuel(inv.getItem(0)), 14, 14-menu.getScaledFuel(inv.getItem(0)));
         }
     }
 

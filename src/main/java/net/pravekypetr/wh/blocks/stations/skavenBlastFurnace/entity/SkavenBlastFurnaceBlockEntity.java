@@ -11,6 +11,8 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
@@ -37,6 +39,7 @@ import net.pravekypetr.wh.blocks.stations.skavenBlastFurnace.SkavenBlastFurnaceB
 import net.pravekypetr.wh.items.ModMetalItems;
 import net.pravekypetr.wh.recipe.BlastFurnaceRecipe;
 import net.pravekypetr.wh.screen.skavenBlastFurnace.SkavenBlastFurnaceMenu;
+import net.minecraft.world.level.block.CampfireBlock;
 // import net.minecraft.util.datafix.fixes.FurnaceRecipeFix;
 
 public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuProvider {
@@ -51,7 +54,7 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
 
     protected final ContainerData data;
     private int progress = 0;
-    private int maxProgress = 100;
+    private int maxProgress = 400;
 
     private int fuel = 0;
 
@@ -143,18 +146,19 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, SkavenBlastFurnaceBlockEntity pEntity) {
+        RandomSource randomsource = level.getRandom();
         if (level.isClientSide()) {
             if (pEntity.rotation % 20 == 0 && state.getValue(SkavenBlastFurnaceBlock.UNLIT) == false) {
-                RandomSource randomsource = level.getRandom();
                 level.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, true, (double)pos.getX() + 0.5D + randomsource.nextDouble() / 3.0D * (double)(randomsource.nextBoolean() ? 1 : -1), (double)pos.above().getY() + randomsource.nextDouble() + randomsource.nextDouble(), (double)pos.getZ() + 0.5D + randomsource.nextDouble() / 3.0D * (double)(randomsource.nextBoolean() ? 1 : -1), 0.0D, 0.07D, 0.0D);
                 level.addParticle(ParticleTypes.SMOKE, (double)pos.getX() + 0.5D + randomsource.nextDouble() / 4.0D * (double)(randomsource.nextBoolean() ? 1 : -1), (double)pos.getY() + 0.4D, (double)pos.getZ() + 0.5D + randomsource.nextDouble() / 4.0D * (double)(randomsource.nextBoolean() ? 1 : -1), 0.0D, 0.005D, 0.0D);
+            }
+            if (pEntity.rotation % 60 == 0 && state.getValue(SkavenBlastFurnaceBlock.UNLIT) == false) {
+                level.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.CAMPFIRE_CRACKLE, SoundSource.BLOCKS, 0.5F + randomsource.nextFloat(), randomsource.nextFloat() * 0.7F + 0.6F, false);
             }
             return;
         }
         
-        if (pEntity.fuel > 0) {
-            // blit(pPoseStack, x+19, y+37, 176, 0, 14, menu.getScaledFuel(inv.getItem(0)));
-
+        if (pEntity.fuel > 0) {;
             pEntity.rotation++;
             pEntity.fuel--;
         }
