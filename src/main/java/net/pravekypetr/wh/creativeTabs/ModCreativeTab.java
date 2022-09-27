@@ -4,6 +4,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.pravekypetr.wh.blocks.ModStationBlocks;
 import net.pravekypetr.wh.items.ModOreItems;
+import net.pravekypetr.wh.items.ModTools;
 
 public class ModCreativeTab {
     // OLD WORLD ITEMS
@@ -17,6 +18,12 @@ public class ModCreativeTab {
         @Override
         public ItemStack makeIcon() {
             return new ItemStack(ModOreItems.WARPSTONE.get());
+        }
+    };
+    public static final CreativeModeTab FLUID_TAB = new CreativeModeTab("fluid_tab") {
+        @Override
+        public ItemStack makeIcon() {
+            return new ItemStack(ModTools.WARPSTONE_SLUDGE_BUCKET.get());
         }
     };
 

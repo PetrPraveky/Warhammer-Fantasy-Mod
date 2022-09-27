@@ -14,12 +14,16 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.pravekypetr.wh.attributes.ModWeaponAttribute;
+import net.pravekypetr.wh.blocks.ModFluidBlocks;
 import net.pravekypetr.wh.blocks.ModOreBlocks;
 import net.pravekypetr.wh.blocks.ModStationBlocks;
 import net.pravekypetr.wh.blocks.entities.SkavenBlockEntities;
 import net.pravekypetr.wh.blocks.stations.skavenBlastFurnace.SkavenBlastFurnaceUpper;
+import net.pravekypetr.wh.fluid.ModFluidTypes;
+import net.pravekypetr.wh.fluid.ModFluids;
 import net.pravekypetr.wh.items.ModMetalItems;
 import net.pravekypetr.wh.items.ModOreItems;
+import net.pravekypetr.wh.items.ModTools;
 import net.pravekypetr.wh.items.ModWeapons;
 import net.pravekypetr.wh.networking.ModMessages;
 import net.pravekypetr.wh.recipe.ModRecipes;
@@ -43,10 +47,12 @@ public class WH
         ModOreItems.register(modEventBus);
         ModMetalItems.register(modEventBus);
         ModWeapons.register(modEventBus);
+        ModTools.register(modEventBus);
 
         // BLOCKS
         ModOreBlocks.register(modEventBus);
         ModStationBlocks.register(modEventBus);
+        ModFluidBlocks.register(modEventBus);
 
         // ATTRIBUTES
         ModWeaponAttribute.register(modEventBus);
@@ -60,7 +66,11 @@ public class WH
         // RECIPES
         ModRecipes.register(modEventBus);
 
-        
+        // FLUID
+        ModFluids.register(modEventBus);
+        ModFluidTypes.register(modEventBus);
+
+
         modEventBus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -78,7 +88,8 @@ public class WH
         public static void onClientSetup(FMLClientSetupEvent event)
         {
             MenuScreens.register(ModMenuTypes.SKAVEN_BLAST_FURNACE_MENU.get(), SkavenBlastFurnaceScreen::new);
-            // ItemBlockRenderTypes.setRenderLayer(ModStationBlocks.SKAVEN_BLAST_FURNACE_UPPER.get(), RenderType.translucent());
+            // ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_WARPSTONE_SLUDGE.get(), RenderType.translucent());
+            // ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWIN_WARPSTONE_SLUDGE.get(), RenderType.translucent());
         }
     }
 }
