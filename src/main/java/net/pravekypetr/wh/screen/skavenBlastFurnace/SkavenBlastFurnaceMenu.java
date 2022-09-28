@@ -32,7 +32,7 @@ public class SkavenBlastFurnaceMenu extends AbstractContainerMenu {
 
     public SkavenBlastFurnaceMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
         super(ModMenuTypes.SKAVEN_BLAST_FURNACE_MENU.get(), id);
-        checkContainerSize(inv, 6);
+        checkContainerSize(inv, 5);
         blockEntity = (SkavenBlastFurnaceBlockEntity) entity;
         this.level = inv.player.level;
         this.data = data;
@@ -45,8 +45,7 @@ public class SkavenBlastFurnaceMenu extends AbstractContainerMenu {
             this.addSlot(new SlotItemHandler(handler, 1, 8, 17)); // INPUT 1
             this.addSlot(new SlotItemHandler(handler, 2, 28, 17)); // INPUT 2
             this.addSlot(new SlotItemHandler(handler, 3, 88, 35)); // OUTPUT
-            this.addSlot(new SlotItemHandler(handler, 4, 132, 8)); // FLUID INTAKE
-            this.addSlot(new SlotItemHandler(handler, 5, 132, 62)); // FLUID OUTTAKE
+            this.addSlot(new SlotItemHandler(handler, 4, 132, 62)); // FLUID OUTTAKE
         });
 
         addDataSlots(data);

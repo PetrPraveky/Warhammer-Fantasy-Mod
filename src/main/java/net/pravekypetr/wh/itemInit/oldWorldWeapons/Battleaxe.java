@@ -36,6 +36,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
+import net.pravekypetr.wh._ModItemQualities;
 import net.pravekypetr.wh.attributes.ModWeaponAttribute;
 
 public class Battleaxe extends TieredItem {
@@ -45,14 +46,17 @@ public class Battleaxe extends TieredItem {
     public final boolean heavy;
     public boolean remover;
 
+    private final String quality;
+
     private Multimap<Attribute, AttributeModifier> map;
 
-    public Battleaxe(Tier tier, int dmg, float speed, boolean heavy, Item.Properties properties) {
+    public Battleaxe(Tier tier, String quality, int dmg, float speed, boolean heavy, Item.Properties properties) {
         super(tier, properties);
         this.attackDamage = (float)dmg+tier.getAttackDamageBonus();
         this.attackSpeed = speed;
         this.heavy = heavy;
         this.cooldown = 36;
+        this.quality = quality;
 
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", this.attackDamage, AttributeModifier.Operation.ADDITION));
@@ -65,8 +69,9 @@ public class Battleaxe extends TieredItem {
     // Hover tooltip
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
+        components.add(Component.literal(this.quality).withStyle(_ModItemQualities.getColor(this.quality)));
         if (Screen.hasShiftDown()) {
-            components.add(Component.translatable("wh.info.battleaxe").withStyle(ChatFormatting.AQUA));
+            components.add(Component.translatable("wh.info.battleaxe").withStyle(ChatFormatting.WHITE));
         } else {
             components.add(Component.translatable("wh.info.description").withStyle(ChatFormatting.YELLOW));
         }

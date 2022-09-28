@@ -1,6 +1,13 @@
 {
     "item.wh.warpstone": "Warpstone",
 
+    "item.wh.hot_steel_ingot": "Hot Steel Ingot",
+    "item.wh.steel_ingot": "Steel Ingot",
+
+
+
+    "item.wh.warpstone_sludge_bucket": "Bucket of Liquid Warpstone Sludge",
+
 
 
     "item.wh.wooden_two_handed_sword": "Two-handed Wooden Sword",
@@ -66,11 +73,13 @@
     "block.wh.deepslate_warpstone_ore": "Deepslate Warpstone Ore",
 
     "block.wh.skaven_blast_furnace": "Skaven Blast Furnace",
+    "block.wh.skaven_casting_barrel": "Skaven Casting Barrel",
 
 
 
     "itemGroup.ore_tab": "Old World's Ores",
     "itemGroup.metal_tab": "Old World's Metals",
+    "itemGroup.fluid_tab": "Old World's Fluids",
 
     "itemGroup.skaven_technology": "Skaven Technology & Alchemy",
 
@@ -82,11 +91,31 @@
     "attirubte.add.damage": "Additional Damage",
 
 
+
     "death.attack.slashed": "Cut into bits",
     "death.attack.hammered": "Crushed by weight of hammer",
 
 
+
     "wh.info.description": "Press SHIFT for description",
+
+    "wh.info.skaven.blastfurnace": "Special furnace for making alloys and steel. Is 2 block high!",
+    "wh.info.skaven.castingbarrel": "Block for cooling down hot metals and parts.",
+
+    "wh.info.warpstone_block": "Block of pure Chaos energy. Emits some amount of light",
+    "wh.info.warpstone_ore": "Warpstone ore. Pretty rare and emits some amount of light",
+    "wh.info.deepslate_warpstone_ore": "Warpstone ore. Pretty rare and emits some amount of light",
+
+
+
+    "wh.info.hot_steel_ingot": "Wow, really HOT ingot, go cool it down!",
+    "wh.info.steel_ingot": "Stronger than iron",
+
+    "wh.info.warpstone": "Crystal of pure Chaos energy",
+
+
+
+    "wh.info.warpstone_sludge_bucket": "Bucket of Liquid warpstone sludge.",
 
     "wh.info.warhammer": "\n- With right click, you can deal AoE attack \n   in range of 2 blocks around you. \n- Damage of this attack is 60% of normal attack and \n   you can do it only once every 2 seconds\n",
     "wh.info.warhammer.one_handed": "\n- With right click, you can deal AoE attack \n   in range of 2 blocks around you. \n- Damage of this attack is 60% of normal attack and \n   you can do it only once every 2 seconds\n",
@@ -94,6 +123,6 @@
     "wh.info.spear": "\n- Spear weapons have increased attack range. \n- You can also throw it with right click, but be warned, \n   it will decrease durability of spear by large amount.\n",
     "wh.info.halbert": "\n- Halbert weapons have increased attack range. \n- They also have sweep attack, like sword, on closer range. \n- They deal more damage than spear, but can't be thrown.\n",
     "wh.info.longsword": "\n- Two-handed swords are slower than normal swords, \n   but deal more damage.\n- You can also do special attack with right click, \n   this will result in AoE attack.\n",
-    "wh.info.rapier": "\n- Rapiers are like sword, but faster and do not have \n   sweeping attacks.",
+    "wh.info.rapier": "- Rapiers are like sword, but faster and do not have sweeping attacks.",
     "wh.info.battleaxe": "\n- Battleaxes deal huge amount of damage, but are bit slow. \n- They also have second attack on right click, \n   which just do the same attack as left click."
 }

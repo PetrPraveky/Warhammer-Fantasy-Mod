@@ -43,6 +43,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import net.minecraftforge.common.ForgeMod;
+import net.pravekypetr.wh._ModItemQualities;
 import net.pravekypetr.wh.attributes.ModWeaponAttribute;
 import net.pravekypetr.wh.damageSource.ModDamageSource;
 
@@ -53,6 +54,8 @@ public class Dagger extends TieredItem {
     public final float cooldown;
     public final float damageAmplifier;
 
+    private final String quality;
+
     public boolean remover;
 
     private boolean stab = false;
@@ -61,13 +64,14 @@ public class Dagger extends TieredItem {
 
     private Multimap<Attribute, AttributeModifier> map;
 
-    public Dagger(Tier tier, int dmg, float speed, Item.Properties properties) {
+    public Dagger(Tier tier, String quality, int dmg, float speed, Item.Properties properties) {
         super(tier, properties);
         this.attackDamage = (float)dmg+tier.getAttackDamageBonus();
         this.reach = -0.5f;
         this.attackSpeed = speed;
         this.cooldown = 60;
         this.damageAmplifier = 2;
+        this.quality = quality;
 
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", this.attackDamage, AttributeModifier.Operation.ADDITION));
@@ -84,8 +88,9 @@ public class Dagger extends TieredItem {
     // Hover tooltip
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
+        components.add(Component.literal(this.quality).withStyle(_ModItemQualities.getColor(this.quality)));
         if (Screen.hasShiftDown()) {
-            components.add(Component.translatable("wh.info.dagger").withStyle(ChatFormatting.AQUA));
+            components.add(Component.translatable("wh.info.dagger").withStyle(ChatFormatting.WHITE));
         } else {
             components.add(Component.translatable("wh.info.description").withStyle(ChatFormatting.YELLOW));
         }

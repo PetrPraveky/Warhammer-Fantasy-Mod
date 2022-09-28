@@ -29,6 +29,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
+import net.pravekypetr.wh._ModItemQualities;
 import net.pravekypetr.wh.attributes.ModWeaponAttribute;
 import net.pravekypetr.wh.networking.ModMessages;
 import net.pravekypetr.wh.networking.packet.HammerSlamC2S;
@@ -41,11 +42,12 @@ public class Warhammer extends TieredItem {
     public final float cooldown;
     public final float reduction;
     public final boolean heavy;
-    // public static float aoeDamage;
+
+    private final String quality;
 
     private Multimap<Attribute, AttributeModifier> map;
 
-    public Warhammer(Tier tier, int dmg, float speed, float cooldown, float radius, boolean heavy, Item.Properties properties) {
+    public Warhammer(Tier tier, String quality, int dmg, float speed, float cooldown, float radius, boolean heavy, Item.Properties properties) {
         super(tier, properties);
         this.attackDamage = (float)dmg+tier.getAttackDamageBonus();
         this.attackSpeed = speed;
@@ -54,6 +56,7 @@ public class Warhammer extends TieredItem {
         this.reduction = 0.4f;
         this.aoeDamage = (this.attackDamage+1)*(1f-this.reduction);
         this.heavy = heavy;
+        this.quality = quality;
 
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", this.attackDamage, AttributeModifier.Operation.ADDITION));
@@ -67,11 +70,12 @@ public class Warhammer extends TieredItem {
     // Hover tooltip
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
+        components.add(Component.literal(this.quality).withStyle(_ModItemQualities.getColor(this.quality)));
         if (Screen.hasShiftDown()) {
             if (this.heavy) {
-                components.add(Component.translatable("wh.info.warhammer").withStyle(ChatFormatting.AQUA));
+                components.add(Component.translatable("wh.info.warhammer").withStyle(ChatFormatting.WHITE));
             } else {
-                components.add(Component.translatable("wh.info.warhammer.one_handed").withStyle(ChatFormatting.AQUA));
+                components.add(Component.translatable("wh.info.warhammer.one_handed").withStyle(ChatFormatting.WHITE));
             }
         } else {
             components.add(Component.translatable("wh.info.description").withStyle(ChatFormatting.YELLOW));

@@ -10,7 +10,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
@@ -20,12 +19,9 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.AbstractFurnaceMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BlastFurnaceBlock;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.ForgeHooks;
@@ -36,14 +32,11 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.pravekypetr.wh.blocks.entities.SkavenBlockEntities;
 import net.pravekypetr.wh.blocks.stations.skavenBlastFurnace.SkavenBlastFurnaceBlock;
-import net.pravekypetr.wh.items.ModMetalItems;
 import net.pravekypetr.wh.recipe.BlastFurnaceRecipe;
 import net.pravekypetr.wh.screen.skavenBlastFurnace.SkavenBlastFurnaceMenu;
-import net.minecraft.world.level.block.CampfireBlock;
-// import net.minecraft.util.datafix.fixes.FurnaceRecipeFix;
 
 public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuProvider {
-    private final ItemStackHandler itemHandler = new ItemStackHandler(6) {
+    private final ItemStackHandler itemHandler = new ItemStackHandler(5) {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
@@ -59,7 +52,6 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
     private int fuel = 0;
 
     private int rotation = 0;
-    private boolean hasRecipe = false;
 
     public SkavenBlastFurnaceBlockEntity(BlockPos pos, BlockState state) {
         super(SkavenBlockEntities.SKAVEN_BLAST_FURNACE.get(), pos, state);
@@ -177,7 +169,6 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
                 craftItem(pEntity);
             }
         } else {
-            pEntity.hasRecipe = false;
             pEntity.resetProgress();
             if (pEntity.fuel == 0) {
 

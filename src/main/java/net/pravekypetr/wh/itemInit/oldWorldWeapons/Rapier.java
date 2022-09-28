@@ -30,7 +30,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
-
+import net.pravekypetr.wh._ModItemQualities;
 import net.pravekypetr.wh.attributes.ModWeaponAttribute;
 
 public class Rapier extends TieredItem {
@@ -38,17 +38,20 @@ public class Rapier extends TieredItem {
     public final float attackSpeed;
     public final float cooldown;
 
+    private final String quality;
+
     public boolean remover;
 
     protected static final UUID ATTACK_REACH_MODIFIER = UUID.fromString("2f8f916c-bf09-11ec-9d64-0242ac120002");
 
     private Multimap<Attribute, AttributeModifier> map;
 
-    public Rapier(Tier tier, int dmg, float speed, Item.Properties properties) {
+    public Rapier(Tier tier, String quality, int dmg, float speed, Item.Properties properties) {
         super(tier, properties);
         this.attackDamage = (float)dmg+tier.getAttackDamageBonus();
         this.attackSpeed = speed;
         this.cooldown = 20;
+        this.quality = quality;
 
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", this.attackDamage, AttributeModifier.Operation.ADDITION));
@@ -60,8 +63,9 @@ public class Rapier extends TieredItem {
     // Hover tooltip
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
+        components.add(Component.literal(this.quality).withStyle(_ModItemQualities.getColor(this.quality)));
         if (Screen.hasShiftDown()) {
-            components.add(Component.translatable("wh.info.rapier").withStyle(ChatFormatting.AQUA));
+            components.add(Component.translatable("wh.info.rapier").withStyle(ChatFormatting.WHITE));
         } else {
             components.add(Component.translatable("wh.info.description").withStyle(ChatFormatting.YELLOW));
         }

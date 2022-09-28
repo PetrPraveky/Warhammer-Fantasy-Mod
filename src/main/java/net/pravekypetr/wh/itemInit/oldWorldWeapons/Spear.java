@@ -38,11 +38,14 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import net.minecraftforge.common.ForgeMod;
+import net.pravekypetr.wh._ModItemQualities;
 
 public class Spear extends TieredItem {
     public final float attackDamage;
     public final float reach;
     public final float attackSpeed;
+
+    private final String quality;
 
     public boolean remover;
 
@@ -50,11 +53,12 @@ public class Spear extends TieredItem {
 
     private Multimap<Attribute, AttributeModifier> map;
 
-    public Spear(Tier tier, int dmg, float speed, Item.Properties properties) {
+    public Spear(Tier tier, String quality, int dmg, float speed, Item.Properties properties) {
         super(tier, properties);
         this.attackDamage = (float)dmg+tier.getAttackDamageBonus();
         this.reach = 3.5f;
         this.attackSpeed = speed;
+        this.quality = quality;
 
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", this.attackDamage, AttributeModifier.Operation.ADDITION));
@@ -69,8 +73,9 @@ public class Spear extends TieredItem {
     // Hover tooltip
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
+        components.add(Component.literal(this.quality).withStyle(_ModItemQualities.getColor(this.quality)));
         if (Screen.hasShiftDown()) {
-            components.add(Component.translatable("wh.info.spear").withStyle(ChatFormatting.AQUA));
+            components.add(Component.translatable("wh.info.spear").withStyle(ChatFormatting.WHITE));
         } else {
             components.add(Component.translatable("wh.info.description").withStyle(ChatFormatting.YELLOW));
         }
