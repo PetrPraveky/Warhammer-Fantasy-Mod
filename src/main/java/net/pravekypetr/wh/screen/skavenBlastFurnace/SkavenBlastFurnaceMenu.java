@@ -12,6 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.pravekypetr.wh.blocks.ModStationBlocks;
@@ -25,6 +26,7 @@ public class SkavenBlastFurnaceMenu extends AbstractContainerMenu {
     public final SkavenBlastFurnaceBlockEntity blockEntity;
     private final Level level;
     private final ContainerData data;
+    private FluidStack fluidStack;
 
     public SkavenBlastFurnaceMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
         this(id, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(3));
@@ -36,6 +38,7 @@ public class SkavenBlastFurnaceMenu extends AbstractContainerMenu {
         blockEntity = (SkavenBlastFurnaceBlockEntity) entity;
         this.level = inv.player.level;
         this.data = data;
+        this.fluidStack = blockEntity.getFluidStack();
 
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
@@ -49,6 +52,18 @@ public class SkavenBlastFurnaceMenu extends AbstractContainerMenu {
         });
 
         addDataSlots(data);
+    }
+
+    public void setFluid(FluidStack fluidStack) {
+        this.fluidStack = fluidStack;
+    }
+
+    public FluidStack getFluidStack() {
+        return fluidStack;
+    }
+
+    public SkavenBlastFurnaceBlockEntity getBlockEntity() {
+        return this.blockEntity;
     }
 
     public boolean isCrafing() {

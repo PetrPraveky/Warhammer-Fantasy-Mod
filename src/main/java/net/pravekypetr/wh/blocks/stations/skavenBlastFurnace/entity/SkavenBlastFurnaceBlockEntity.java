@@ -21,17 +21,26 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.pravekypetr.wh.blocks.entities.SkavenBlockEntities;
 import net.pravekypetr.wh.blocks.stations.skavenBlastFurnace.SkavenBlastFurnaceBlock;
+import net.pravekypetr.wh.fluid.ModFluids;
+import net.pravekypetr.wh.items.ModTools;
+import net.pravekypetr.wh.networking.ModMessages;
+import net.pravekypetr.wh.networking.packet.C2S.stations.FluidSyncS2C;
 import net.pravekypetr.wh.recipe.BlastFurnaceRecipe;
 import net.pravekypetr.wh.screen.skavenBlastFurnace.SkavenBlastFurnaceMenu;
 
@@ -41,9 +50,46 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
         protected void onContentsChanged(int slot) {
             setChanged();
         }
+
+        // @Override
+        // public boolean isItemValid(int slot, ItemStack stack) {
+        //     return switch (slot) {
+        //         case 4 -> stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent();
+        //         default -> super.isItemValid(slot, stack);
+        //     };
+        // }
+
     };
 
+
+
+    private final FluidTank FLUID_TANK = new FluidTank(4000) {
+        @Override
+        protected void onContentsChanged() {
+            setChanged();
+            if (!level.isClientSide()) {
+                ModMessages.sendToClients(new FluidSyncS2C(this.fluid, worldPosition));
+            }
+
+        }
+        @Override
+        public boolean isFluidValid(net.minecraftforge.fluids.FluidStack stack) {
+            return stack.getFluid() == ModFluids.SOURCE_WARPSTONE_SLUDGE.get();
+        }
+    };
+
+    public void setFluid(FluidStack stack) {
+        this.FLUID_TANK.setFluid(stack);
+    }
+
+    public FluidStack getFluidStack() {
+        return this.FLUID_TANK.getFluid();
+    }
+
+
+
     private LazyOptional<IItemHandler> lazyItemHander = LazyOptional.empty();
+    private LazyOptional<IFluidHandler> lazyFluidHandler = LazyOptional.empty();
 
     protected final ContainerData data;
     private int progress = 0;
@@ -100,6 +146,10 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
         if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             return lazyItemHander.cast();
         }
+
+        if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+            return lazyFluidHandler.cast();
+        }
         return super.getCapability(cap, side);
     }
     
@@ -107,6 +157,7 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
     public void onLoad() {
         super.onLoad();
         lazyItemHander = LazyOptional.of(() -> itemHandler);
+        lazyFluidHandler = LazyOptional.of(() -> FLUID_TANK);
     }
 
     @Override
@@ -118,6 +169,8 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
     @Override
     protected void saveAdditional(CompoundTag nbt) {
         nbt.put("inventory", itemHandler.serializeNBT());
+
+        nbt = FLUID_TANK.writeToNBT(nbt);
         
         super.saveAdditional(nbt);
 
@@ -127,6 +180,7 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
     public void load(CompoundTag nbt) {
         super.load(nbt);
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
+        FLUID_TANK.readFromNBT(nbt);
     }
 
     public void drops() {
@@ -138,6 +192,7 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, SkavenBlastFurnaceBlockEntity pEntity) {
+        System.out.println("l");
         RandomSource randomsource = level.getRandom();
         if (level.isClientSide()) {
             if (pEntity.rotation % 20 == 0 && state.getValue(SkavenBlastFurnaceBlock.UNLIT) == false) {
@@ -176,6 +231,29 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
             }
             setChanged(level, pos, state);
         }
+
+        // Fluid handeling
+        if (hasFluidItemInOutputSlot(pEntity)) {
+            transferFluidIntoItem(pEntity);
+        }
+    }
+
+    private static void transferFluidIntoItem(SkavenBlastFurnaceBlockEntity pEntity) {
+        pEntity.itemHandler.getStackInSlot(4).getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(handler -> {
+            if (pEntity.FLUID_TANK.getFluidAmount() >= 1000) {
+                // if there is a bucket
+                if (pEntity.itemHandler.getStackInSlot(4).getItem() == Items.BUCKET) {
+                    pEntity.FLUID_TANK.drain(1000, IFluidHandler.FluidAction.EXECUTE);
+
+                    pEntity.itemHandler.extractItem(4, 1, false);
+                    pEntity.itemHandler.insertItem(4, new ItemStack(ModTools.WARPSTONE_SLUDGE_BUCKET.get(), 1), false);
+                }
+            }
+        });
+    }
+
+    private static boolean hasFluidItemInOutputSlot(SkavenBlastFurnaceBlockEntity pEntity) {
+        return pEntity.itemHandler.getStackInSlot(4).getCount() > 0;
     }
 
     private void resetProgress() {
@@ -197,6 +275,8 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
             entity.itemHandler.extractItem(2, 1, false);
             entity.itemHandler.setStackInSlot(3, new ItemStack(recipe.get().getResultItem().getItem(), entity.itemHandler.getStackInSlot(3).getCount()+1));
             entity.resetProgress();
+
+            entity.FLUID_TANK.fill(new FluidStack(ModFluids.SOURCE_WARPSTONE_SLUDGE.get(), 100), IFluidHandler.FluidAction.EXECUTE);
         }
     }
 

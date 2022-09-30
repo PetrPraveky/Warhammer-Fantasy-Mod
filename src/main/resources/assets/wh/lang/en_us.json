@@ -124,5 +124,10 @@
     "wh.info.halbert": "\n- Halbert weapons have increased attack range. \n- They also have sweep attack, like sword, on closer range. \n- They deal more damage than spear, but can't be thrown.\n",
     "wh.info.longsword": "\n- Two-handed swords are slower than normal swords, \n   but deal more damage.\n- You can also do special attack with right click, \n   this will result in AoE attack.\n",
     "wh.info.rapier": "- Rapiers are like sword, but faster and do not have sweeping attacks.",
-    "wh.info.battleaxe": "\n- Battleaxes deal huge amount of damage, but are bit slow. \n- They also have second attack on right click, \n   which just do the same attack as left click."
+    "wh.info.battleaxe": "\n- Battleaxes deal huge amount of damage, but are bit slow. \n- They also have second attack on right click, \n   which just do the same attack as left click.",
+
+
+
+    "wh.tooltip.liquid.amount.with.capacity": "%s / &s mB",
+    "wh.tooltip.liquid.amount": "%s mB"
 }

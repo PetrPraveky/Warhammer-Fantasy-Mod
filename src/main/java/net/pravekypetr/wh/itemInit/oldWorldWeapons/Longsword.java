@@ -36,7 +36,7 @@ import net.minecraft.world.level.material.Material;
 import net.pravekypetr.wh._ModItemQualities;
 import net.pravekypetr.wh.attributes.ModWeaponAttribute;
 import net.pravekypetr.wh.networking.ModMessages;
-import net.pravekypetr.wh.networking.packet.LongswordSlashC2S;
+import net.pravekypetr.wh.networking.packet.S2C.weapons.LongswordSlashC2S;
 
 public class Longsword extends TieredItem {
     public final float attackDamage;

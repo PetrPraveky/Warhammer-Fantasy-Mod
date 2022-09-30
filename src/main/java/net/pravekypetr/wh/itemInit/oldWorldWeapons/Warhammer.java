@@ -32,7 +32,7 @@ import net.minecraft.world.level.material.Material;
 import net.pravekypetr.wh._ModItemQualities;
 import net.pravekypetr.wh.attributes.ModWeaponAttribute;
 import net.pravekypetr.wh.networking.ModMessages;
-import net.pravekypetr.wh.networking.packet.HammerSlamC2S;
+import net.pravekypetr.wh.networking.packet.S2C.weapons.HammerSlamC2S;
 
 public class Warhammer extends TieredItem {
     public final float attackDamage;

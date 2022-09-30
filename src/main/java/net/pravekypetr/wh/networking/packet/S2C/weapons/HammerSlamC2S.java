@@ -1,4 +1,4 @@
-package net.pravekypetr.wh.networking.packet;
+package net.pravekypetr.wh.networking.packet.S2C.weapons;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -11,14 +11,14 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.network.NetworkEvent;
 import net.pravekypetr.wh.damageSource.ModDamageSource;
-import net.pravekypetr.wh.itemInit.oldWorldWeapons.Longsword;
+import net.pravekypetr.wh.itemInit.oldWorldWeapons.Warhammer;
 import net.minecraft.world.entity.EquipmentSlot;
 
-public class LongswordSlashC2S {
-    public LongswordSlashC2S() {
+public class HammerSlamC2S {
+    public HammerSlamC2S() {
     }
 
-    public LongswordSlashC2S(FriendlyByteBuf buf) {
+    public HammerSlamC2S(FriendlyByteBuf buf) {
     }
 
     public void toBytes(FriendlyByteBuf buf) {
@@ -35,14 +35,19 @@ public class LongswordSlashC2S {
             ServerPlayer player = context.getSender();
             ServerLevel level = player.getLevel();
             try {                  
-                Longsword weapon = (Longsword)player.getMainHandItem().getItem();
+                Warhammer weapon = (Warhammer)player.getMainHandItem().getItem();
                 List<Entity> entityList = level.getEntities(player, AABB.ofSize(player.position(),weapon.aoeRadius*2, 2, weapon.aoeRadius*2));
                 for (Entity entity : entityList) {
                     try {
                         LivingEntity livingEntity = (LivingEntity)entity;
-                        float force = 0.2f;
+                        float force;
+                        if (weapon.heavy) {
+                            force = 0.5f;
+                        } else {
+                            force = 0.35f;
+                        }
                         livingEntity.knockback((double)(force), (double)(player.position().x-livingEntity.position().x), (double)(player.position().y-livingEntity.position().y));
-                        livingEntity.hurt(ModDamageSource.SLASHED, weapon.aoeDamage);
+                        livingEntity.hurt(ModDamageSource.HAMMERED, weapon.aoeDamage);
                         player.getMainHandItem().hurtAndBreak(1, player, e -> e.broadcastBreakEvent(EquipmentSlot.MAINHAND));
                         
                     } catch (Exception e) {}
