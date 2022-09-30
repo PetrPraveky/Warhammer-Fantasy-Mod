@@ -51,13 +51,13 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
             setChanged();
         }
 
-        // @Override
-        // public boolean isItemValid(int slot, ItemStack stack) {
-        //     return switch (slot) {
-        //         case 4 -> stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent();
-        //         default -> super.isItemValid(slot, stack);
-        //     };
-        // }
+        @Override
+        public boolean isItemValid(int slot, ItemStack stack) {
+            return switch (slot) {
+                case 4 -> stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent();
+                default -> super.isItemValid(slot, stack);
+            };
+        }
 
     };
 
@@ -93,7 +93,7 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
 
     protected final ContainerData data;
     private int progress = 0;
-    private int maxProgress = 400;
+    private int maxProgress = 100; // do 400
 
     private int fuel = 0;
 
@@ -192,7 +192,7 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, SkavenBlastFurnaceBlockEntity pEntity) {
-        System.out.println("l");
+        System.out.println(pEntity.getFluidStack().getAmount());
         RandomSource randomsource = level.getRandom();
         if (level.isClientSide()) {
             if (pEntity.rotation % 20 == 0 && state.getValue(SkavenBlastFurnaceBlock.UNLIT) == false) {
