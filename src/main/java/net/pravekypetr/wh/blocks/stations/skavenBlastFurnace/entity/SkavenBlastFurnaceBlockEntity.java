@@ -54,6 +54,9 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
         @Override
         public boolean isItemValid(int slot, ItemStack stack) {
             return switch (slot) {
+                case 0 -> true;
+                case 1 -> true;
+                case 2 -> true;
                 case 3 -> false;
                 case 4 -> stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent();
                 case 5 -> false;
@@ -248,7 +251,7 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
         pEntity.itemHandler.getStackInSlot(4).getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(handler -> {
             if (pEntity.FLUID_TANK.getFluidAmount() >= 1000) {
                 // if there is a bucket
-                if (pEntity.itemHandler.getStackInSlot(4).getItem() == Items.BUCKET && pEntity.itemHandler.getStackInSlot(6).isEmpty()) {
+                if (pEntity.itemHandler.getStackInSlot(4).getItem() == Items.BUCKET && pEntity.itemHandler.getStackInSlot(5).isEmpty()) {
                     pEntity.FLUID_TANK.drain(1000, IFluidHandler.FluidAction.EXECUTE);
 
                     pEntity.itemHandler.extractItem(4, 1, false);

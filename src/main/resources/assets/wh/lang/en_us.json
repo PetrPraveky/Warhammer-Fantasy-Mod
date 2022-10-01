@@ -7,6 +7,8 @@
 
 
     "item.wh.warpstone_sludge_bucket": "Bucket of Liquid Warpstone Sludge",
+    "item.wh.warpstone_bucket": "Bucket of Liquid Warpstone",
+    "item.wh.purified_warpstone_bucket": "Bucket of Purified Liquid Warpstone",
 
 
 
@@ -116,6 +118,10 @@
 
 
     "wh.info.warpstone_sludge_bucket": "Bucket of Liquid warpstone sludge.",
+    "wh.info.warpstone_bucket": "Bucket of Some-what Purified Warpstone liquid. Is Consumed 50mB per crafting",
+    "wh.info.purified_warpstone_bucket": "Bucket of Some-what Purified Warpstone liquid. Is Consumed 10mB per crafting",
+
+
 
     "wh.info.warhammer": "\n- With right click, you can deal AoE attack \n   in range of 2 blocks around you. \n- Damage of this attack is 60% of normal attack and \n   you can do it only once every 2 seconds\n",
     "wh.info.warhammer.one_handed": "\n- With right click, you can deal AoE attack \n   in range of 2 blocks around you. \n- Damage of this attack is 60% of normal attack and \n   you can do it only once every 2 seconds\n",

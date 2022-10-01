@@ -26,19 +26,49 @@ public class ModTools {
     public static final DeferredRegister<Item> TOOLS = DeferredRegister.create(ForgeRegistries.ITEMS, WH.MOD_ID);
 
     public static final RegistryObject<Item> WARPSTONE_SLUDGE_BUCKET = TOOLS.register("warpstone_sludge_bucket", 
-        () -> new BucketItem(ModFluids.SOURCE_WARPSTONE_SLUDGE, new Item.Properties().tab(ModCreativeTab.FLUID_TAB).stacksTo(1).craftRemainder(Items.BUCKET)) {
-            // Hover tooltip
-            @Override
-            public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
-                components.add(Component.literal("Uncommon").withStyle(_ModItemQualities.UNCOMMON));
-                if (Screen.hasShiftDown()) {
-                    components.add(Component.translatable("wh.info.warpstone_sludge_bucket").withStyle(ChatFormatting.WHITE));
-                } else {
-                    components.add(Component.translatable("wh.info.description").withStyle(ChatFormatting.YELLOW));
-                }
-                super.appendHoverText(stack, level, components, flag);
+    () -> new BucketItem(ModFluids.SOURCE_WARPSTONE_SLUDGE, new Item.Properties().tab(ModCreativeTab.FLUID_TAB).stacksTo(1).craftRemainder(Items.BUCKET)) {
+        // Hover tooltip
+        @Override
+        public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
+            components.add(Component.literal("Uncommon").withStyle(_ModItemQualities.UNCOMMON));
+            if (Screen.hasShiftDown()) {
+                components.add(Component.translatable("wh.info.warpstone_sludge_bucket").withStyle(ChatFormatting.WHITE));
+            } else {
+                components.add(Component.translatable("wh.info.description").withStyle(ChatFormatting.YELLOW));
             }
-        });
+            super.appendHoverText(stack, level, components, flag);
+        }
+    });
+
+    public static final RegistryObject<Item> WARPSTONE_BUCKET = TOOLS.register("warpstone_bucket", 
+    () -> new BucketItem(ModFluids.SOURCE_WARPSTONE, new Item.Properties().tab(ModCreativeTab.FLUID_TAB).stacksTo(1).craftRemainder(Items.BUCKET)) {
+        // Hover tooltip
+        @Override
+        public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
+            components.add(Component.literal("Uncommon").withStyle(_ModItemQualities.UNCOMMON));
+            if (Screen.hasShiftDown()) {
+                components.add(Component.translatable("wh.info.warpstone_bucket").withStyle(ChatFormatting.WHITE));
+            } else {
+                components.add(Component.translatable("wh.info.description").withStyle(ChatFormatting.YELLOW));
+            }
+            super.appendHoverText(stack, level, components, flag);
+        }
+    });
+
+    public static final RegistryObject<Item> PURIFIED_WARPSTONE_BUCKET = TOOLS.register("purified_warpstone_bucket", 
+    () -> new BucketItem(ModFluids.SOURCE_PURIFIED_WARPSTONE, new Item.Properties().tab(ModCreativeTab.FLUID_TAB).stacksTo(1).craftRemainder(Items.BUCKET)) {
+        // Hover tooltip
+        @Override
+        public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
+            components.add(Component.literal("Rare").withStyle(_ModItemQualities.RARE));
+            if (Screen.hasShiftDown()) {
+                components.add(Component.translatable("wh.info.purified_warpstone_bucket").withStyle(ChatFormatting.WHITE));
+            } else {
+                components.add(Component.translatable("wh.info.description").withStyle(ChatFormatting.YELLOW));
+            }
+            super.appendHoverText(stack, level, components, flag);
+        }
+    });
 
     public static void register(IEventBus eventBus) {
         TOOLS.register(eventBus);
