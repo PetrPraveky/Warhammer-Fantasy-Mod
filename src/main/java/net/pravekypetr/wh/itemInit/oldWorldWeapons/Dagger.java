@@ -175,7 +175,6 @@ public class Dagger extends TieredItem {
                 if (reachSqr >= distanceToTargetSqr) {
                     float i = (float)entity.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
                     i += EnchantmentHelper.getKnockbackBonus(entity);
-                    System.out.println(i);
                     target.knockback(i, (double)Mth.sin(entity.getYRot() * ((float)Math.PI / 180F)), (double)(-Mth.cos(entity.getYRot() * ((float)Math.PI / 180F))));
                     target.hurt(ModDamageSource.STABBED, this.attackDamage+1);
                     stab = false;

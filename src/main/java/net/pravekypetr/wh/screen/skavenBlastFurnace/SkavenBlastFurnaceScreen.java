@@ -39,16 +39,18 @@ public class SkavenBlastFurnaceScreen extends AbstractContainerScreen<SkavenBlas
 
     @Override
     protected void renderLabels(PoseStack pPoseStack, int pMouseX, int pMouseY) {
-        int x = (width-imageWidth)/2;
-        int y = (height-imageHeight)/2;
-        
-        renderFluidAreaTootips(pPoseStack, pMouseX, pMouseY, x, y);
+        super.renderLabels(pPoseStack, pMouseX, pMouseY);
+        int x = (width - imageWidth) / 2;
+        int y = (height - imageHeight) / 2;
+
+        renderFluidAreaTooltips(pPoseStack, pMouseX, pMouseY, x, y);
+
     }
 
-    private void renderFluidAreaTootips(PoseStack pPoseStack, int pMouseX, int pMouseY, int x, int y) {
-        if (isMouseAboveArea(pMouseX, pMouseY, x, y, 55, 15)) {
+    private void renderFluidAreaTooltips(PoseStack pPoseStack, int pMouseX, int pMouseY, int x, int y) {
+        if(isMouseAboveArea(pMouseX, pMouseY, x, y, 152, 8)) {
             renderTooltip(pPoseStack, renderer.getTooltip(menu.getFluidStack(), TooltipFlag.Default.NORMAL),
-            Optional.empty(), pMouseX-x, pMouseY-y);
+                    Optional.empty(), pMouseX - x, pMouseY - y);
         }
     }
 
@@ -66,7 +68,7 @@ public class SkavenBlastFurnaceScreen extends AbstractContainerScreen<SkavenBlas
         renderProgressArrow(pPoseStack, x, y);
         renderFuel(pPoseStack, x, y);
 
-        renderer.render(pPoseStack, 152, 8, menu.getFluidStack());
+        renderer.render(pPoseStack, x+152, y+8, menu.getFluidStack());
     }
 
     private void renderProgressArrow(PoseStack pPoseStack, int x, int y) {
@@ -77,6 +79,7 @@ public class SkavenBlastFurnaceScreen extends AbstractContainerScreen<SkavenBlas
 
     private void renderFuel(PoseStack pPoseStack, int x, int y) {
         if (menu.isBurning()) {
+            System.out.println(inv.getContainerSize());
             blit(pPoseStack, x+19, y+37+menu.getScaledFuel(inv.getItem(0)), 176, menu.getScaledFuel(inv.getItem(0)), 14, 14-menu.getScaledFuel(inv.getItem(0)));
         }
     }

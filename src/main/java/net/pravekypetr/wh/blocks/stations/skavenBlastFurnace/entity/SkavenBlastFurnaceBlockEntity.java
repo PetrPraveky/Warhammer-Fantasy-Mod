@@ -45,7 +45,7 @@ import net.pravekypetr.wh.recipe.BlastFurnaceRecipe;
 import net.pravekypetr.wh.screen.skavenBlastFurnace.SkavenBlastFurnaceMenu;
 
 public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuProvider {
-    private final ItemStackHandler itemHandler = new ItemStackHandler(5) {
+    public final ItemStackHandler itemHandler = new ItemStackHandler(6) {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
@@ -54,7 +54,9 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
         @Override
         public boolean isItemValid(int slot, ItemStack stack) {
             return switch (slot) {
+                case 3 -> false;
                 case 4 -> stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent();
+                case 5 -> false;
                 default -> super.isItemValid(slot, stack);
             };
         }
@@ -95,7 +97,7 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
     private int progress = 0;
     private int maxProgress = 100; // do 400
 
-    private int fuel = 0;
+    public int fuel = 0;
 
     private int rotation = 0;
 
@@ -170,6 +172,8 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
     protected void saveAdditional(CompoundTag nbt) {
         nbt.put("inventory", itemHandler.serializeNBT());
 
+        nbt.putInt("fuel", fuel);
+
         nbt = FLUID_TANK.writeToNBT(nbt);
         
         super.saveAdditional(nbt);
@@ -180,6 +184,7 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
     public void load(CompoundTag nbt) {
         super.load(nbt);
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
+        this.fuel = nbt.getInt("fuel");
         FLUID_TANK.readFromNBT(nbt);
     }
 
@@ -189,10 +194,11 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
             inventory.setItem(i, itemHandler.getStackInSlot(i));
         }
         Containers.dropContents(this.level, this.worldPosition, inventory);
+        this.FLUID_TANK.drain(this.FLUID_TANK.getFluidAmount(), IFluidHandler.FluidAction.EXECUTE);
+        this.fuel = 0;
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, SkavenBlastFurnaceBlockEntity pEntity) {
-        System.out.println(pEntity.getFluidStack().getAmount());
         RandomSource randomsource = level.getRandom();
         if (level.isClientSide()) {
             if (pEntity.rotation % 20 == 0 && state.getValue(SkavenBlastFurnaceBlock.UNLIT) == false) {
@@ -204,7 +210,7 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
             }
             return;
         }
-        
+
         if (pEntity.fuel > 0) {;
             pEntity.rotation++;
             pEntity.fuel--;
@@ -242,11 +248,11 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
         pEntity.itemHandler.getStackInSlot(4).getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(handler -> {
             if (pEntity.FLUID_TANK.getFluidAmount() >= 1000) {
                 // if there is a bucket
-                if (pEntity.itemHandler.getStackInSlot(4).getItem() == Items.BUCKET) {
+                if (pEntity.itemHandler.getStackInSlot(4).getItem() == Items.BUCKET && pEntity.itemHandler.getStackInSlot(6).isEmpty()) {
                     pEntity.FLUID_TANK.drain(1000, IFluidHandler.FluidAction.EXECUTE);
 
                     pEntity.itemHandler.extractItem(4, 1, false);
-                    pEntity.itemHandler.insertItem(4, new ItemStack(ModTools.WARPSTONE_SLUDGE_BUCKET.get(), 1), false);
+                    pEntity.itemHandler.setStackInSlot(5, new ItemStack(ModTools.WARPSTONE_SLUDGE_BUCKET.get(), 1));
                 }
             }
         });
@@ -289,7 +295,8 @@ public class SkavenBlastFurnaceBlockEntity extends BlockEntity implements MenuPr
 
         Optional<BlastFurnaceRecipe> recipe = level.getRecipeManager().getRecipeFor(BlastFurnaceRecipe.Type.INSTANCE, inventory, level);
 
-        return recipe.isPresent() && canInsertAmountIntoOutputSlot(inventory) && canInsertItemIntoOutputSlot(inventory, recipe.get().getResultItem());
+        //  && entity.FLUID_TANK.getFluidAmount() < entity.FLUID_TANK.getCapacity()
+        return recipe.isPresent() && canInsertAmountIntoOutputSlot(inventory) && canInsertItemIntoOutputSlot(inventory, recipe.get().getResultItem()); 
     }
 
     private static boolean canInsertItemIntoOutputSlot(SimpleContainer inventory, ItemStack itemStack) {

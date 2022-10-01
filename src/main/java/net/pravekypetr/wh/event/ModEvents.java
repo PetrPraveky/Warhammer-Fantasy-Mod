@@ -92,7 +92,6 @@ public class ModEvents {
                 event.setCanceled(true);
                 try {
                     if (((Player)event.getEntity()).isCreative() == false) {
-                        System.out.println(((Player)event.getEntity()).getMainHandItem().getCount());
                         ((Player)event.getEntity()).setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(event.getPlacedBlock().getBlock(), ((Player)event.getEntity()).getMainHandItem().getCount()+0));
                     }
                 } catch (Exception e) {}

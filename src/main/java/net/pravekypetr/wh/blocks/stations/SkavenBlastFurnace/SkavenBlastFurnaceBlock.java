@@ -34,6 +34,8 @@ import net.minecraftforge.network.NetworkHooks;
 import net.pravekypetr.wh.blocks.ModStationBlocks;
 import net.pravekypetr.wh.blocks.entities.SkavenBlockEntities;
 import net.pravekypetr.wh.blocks.stations.skavenBlastFurnace.entity.SkavenBlastFurnaceBlockEntity;
+import net.pravekypetr.wh.networking.ModMessages;
+import net.pravekypetr.wh.networking.packet.C2S.stations.FluidSyncS2C;
 
 public class SkavenBlastFurnaceBlock extends BaseEntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -130,6 +132,7 @@ public class SkavenBlastFurnaceBlock extends BaseEntityBlock {
                 entity = pLevel.getBlockEntity(pPos.below());
             }
             if (entity instanceof SkavenBlastFurnaceBlockEntity) {
+                ModMessages.sendToClients(new FluidSyncS2C(((SkavenBlastFurnaceBlockEntity) entity).getFluidStack(), pPos));
                 NetworkHooks.openScreen((ServerPlayer)pPlayer, ((SkavenBlastFurnaceBlockEntity)entity), pPos);
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");
