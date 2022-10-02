@@ -5,7 +5,9 @@ import com.mojang.math.Vector3f;
 // import net.kaupenjoe.tutorialmod.TutorialMod;
 import net.pravekypetr.wh.WH;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraftforge.common.SoundActions;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.registries.DeferredRegister;
@@ -32,33 +34,51 @@ public class ModFluidTypes {
         "warpstone_sludge_fluid", () -> new BaseFluidType(WARPSTONE_SLUDGE_STILL_RL, WARPSTONE_SLDUGE_FLOWING_RL, SOAP_OVERLAY_RL,
         0xA109BD10, new Vector3f(224f / 255f, 56f / 255f, 208f / 255f),
             FluidType.Properties.create()
-            .lightLevel(8)
-            .pathType(BlockPathTypes.LAVA)
-            .density(3000)
-            .viscosity(3000)
-            .temperature(1300)
+                .descriptionId("block.wh.fluid.warpstone_sludge")
+                .canSwim(false)
+                .canDrown(false)
+                .pathType(BlockPathTypes.LAVA)
+                .adjacentPathType(null)
+                .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL_LAVA)
+                .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY_LAVA)
+                .lightLevel(15)
+                .density(3000)
+                .viscosity(12000)
+                .temperature(1300)
     ));
 
     public static final RegistryObject<FluidType> WARPSTONE_FLUID_TYPE = FLUID_TYPES.register(
         "warpstone_fluid", () -> new BaseFluidType(WARPSTONE_STILL_RL, WARPSTONE_FLOWING_RL, SOAP_OVERLAY_RL,
         0xA109BD10, new Vector3f(224f / 255f, 56f / 255f, 208f / 255f),
             FluidType.Properties.create()
-            .lightLevel(15)
-            .pathType(BlockPathTypes.LAVA)
-            .density(3000)
-            .viscosity(3000)
-            .temperature(1300)
+                .descriptionId("block.wh.fluid.warpstone")
+                .canSwim(false)
+                .canDrown(false)
+                .pathType(BlockPathTypes.LAVA)
+                .adjacentPathType(null)
+                .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL_LAVA)
+                .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY_LAVA)
+                .lightLevel(15)
+                .density(3000)
+                .viscosity(6000)
+                .temperature(1300)
     ));
 
     public static final RegistryObject<FluidType> PURIFIED_WARPSTONE_FLUID_TYPE = FLUID_TYPES.register(
         "purified_warpstone_fluid", () -> new BaseFluidType(PURIFIED_WARPSTONE_STILL_RL, PURIFIED_WARPSTONE_FLOWING_RL, SOAP_OVERLAY_RL,
         0xA109BD10, new Vector3f(224f / 255f, 56f / 255f, 208f / 255f),
             FluidType.Properties.create()
-            .lightLevel(15)
-            .pathType(BlockPathTypes.LAVA)
-            .density(3000)
-            .viscosity(3000)
-            .temperature(1300)
+                .descriptionId("block.wh.fluid.purified_warpstone")
+                .canSwim(false)
+                .canDrown(false)
+                .pathType(BlockPathTypes.LAVA)
+                .adjacentPathType(null)
+                .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL_LAVA)
+                .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY_LAVA)
+                .lightLevel(15)
+                .density(3000)
+                .viscosity(12000)
+                .temperature(1300)
     ));
 
 
