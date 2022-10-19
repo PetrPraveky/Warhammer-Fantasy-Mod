@@ -1,0 +1,6 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "wh:item/tanned_rat_leather_w"
+    }
+}

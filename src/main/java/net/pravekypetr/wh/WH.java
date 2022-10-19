@@ -17,6 +17,7 @@ import net.pravekypetr.wh.blocks.ModStationBlocks;
 import net.pravekypetr.wh.blocks.entities.SkavenBlockEntities;
 import net.pravekypetr.wh.fluid.ModFluidTypes;
 import net.pravekypetr.wh.fluid.ModFluids;
+import net.pravekypetr.wh.items.ModItems;
 import net.pravekypetr.wh.items.ModMetalItems;
 import net.pravekypetr.wh.items.ModOreItems;
 import net.pravekypetr.wh.items.ModTools;
@@ -44,6 +45,7 @@ public class WH
         ModMetalItems.register(modEventBus);
         ModWeapons.register(modEventBus);
         ModTools.register(modEventBus);
+        ModItems.register(modEventBus);
 
         // BLOCKS
         ModOreBlocks.register(modEventBus);

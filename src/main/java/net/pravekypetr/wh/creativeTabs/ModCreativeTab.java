@@ -20,6 +20,12 @@ public class ModCreativeTab {
             return new ItemStack(ModOreItems.WARPSTONE.get());
         }
     };
+    public static final CreativeModeTab ITEM_TAB = new CreativeModeTab("item_tab") {
+        @Override
+        public ItemStack makeIcon() {
+            return new ItemStack(ModOreItems.WARPSTONE.get());
+        }
+    };
     public static final CreativeModeTab FLUID_TAB = new CreativeModeTab("fluid_tab") {
         @Override
         public ItemStack makeIcon() {
