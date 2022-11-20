@@ -3,8 +3,10 @@ package net.pravekypetr.wh.creativeTabs;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.pravekypetr.wh.blocks.ModStationBlocks;
+import net.pravekypetr.wh.items.ModMetalItems;
 import net.pravekypetr.wh.items.ModOreItems;
 import net.pravekypetr.wh.items.ModTools;
+import net.pravekypetr.wh.items.ModWeapons;
 
 public class ModCreativeTab {
     // OLD WORLD ITEMS
@@ -17,7 +19,7 @@ public class ModCreativeTab {
     public static final CreativeModeTab METAL_TAB = new CreativeModeTab("metal_tab") {
         @Override
         public ItemStack makeIcon() {
-            return new ItemStack(ModOreItems.WARPSTONE.get());
+            return new ItemStack(ModMetalItems.STEEL_INGOT.get());
         }
     };
     public static final CreativeModeTab ITEM_TAB = new CreativeModeTab("item_tab") {
@@ -30,6 +32,12 @@ public class ModCreativeTab {
         @Override
         public ItemStack makeIcon() {
             return new ItemStack(ModTools.WARPSTONE_SLUDGE_BUCKET.get());
+        }
+    };
+    public static final CreativeModeTab WEAPON_TAB = new CreativeModeTab("weapon_tab") {
+        @Override
+        public ItemStack makeIcon() {
+            return new ItemStack(ModWeapons.IRON_WARHAMMER.get());
         }
     };
 

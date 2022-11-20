@@ -94,7 +94,7 @@ public class ModItems {
         public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
             components.add(Component.literal("Uncommon").withStyle(_ModItemQualities.UNCOMMON));
             if (Screen.hasShiftDown()) {
-                components.add(Component.translatable("wh.info.tanned_rat_leather_b").withStyle(ChatFormatting.WHITE));
+                components.add(Component.translatable("wh.info.tanned_rat_leather").withStyle(ChatFormatting.WHITE));
             } else {
                 components.add(Component.translatable("wh.info.description").withStyle(ChatFormatting.YELLOW));
             }
@@ -107,7 +107,7 @@ public class ModItems {
         public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
             components.add(Component.literal("Uncommon").withStyle(_ModItemQualities.UNCOMMON));
             if (Screen.hasShiftDown()) {
-                components.add(Component.translatable("wh.info.tanned_rat_leather_w").withStyle(ChatFormatting.WHITE));
+                components.add(Component.translatable("wh.info.tanned_rat_leather").withStyle(ChatFormatting.WHITE));
             } else {
                 components.add(Component.translatable("wh.info.description").withStyle(ChatFormatting.YELLOW));
             }
