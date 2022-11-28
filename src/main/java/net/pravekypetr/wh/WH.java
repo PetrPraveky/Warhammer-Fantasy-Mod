@@ -3,6 +3,7 @@ package net.pravekypetr.wh;
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -15,6 +16,8 @@ import net.pravekypetr.wh.blocks.ModFluidBlocks;
 import net.pravekypetr.wh.blocks.ModOreBlocks;
 import net.pravekypetr.wh.blocks.ModStationBlocks;
 import net.pravekypetr.wh.blocks.entities.SkavenBlockEntities;
+import net.pravekypetr.wh.entity.ModEntityTypes;
+import net.pravekypetr.wh.entity.client.RatRenderer;
 import net.pravekypetr.wh.fluid.ModFluidTypes;
 import net.pravekypetr.wh.fluid.ModFluids;
 import net.pravekypetr.wh.items.ModItems;
@@ -26,6 +29,7 @@ import net.pravekypetr.wh.networking.ModMessages;
 import net.pravekypetr.wh.recipe.ModRecipes;
 import net.pravekypetr.wh.screen.ModMenuTypes;
 import net.pravekypetr.wh.screen.skavenBlastFurnace.SkavenBlastFurnaceScreen;
+import software.bernie.geckolib3.GeckoLib;
 
 import org.slf4j.Logger;
 
@@ -68,6 +72,12 @@ public class WH
         ModFluids.register(modEventBus);
         ModFluidTypes.register(modEventBus);
 
+        // ENTITIES
+        ModEntityTypes.register(modEventBus);
+
+        // GECKOLIB INIT
+        GeckoLib.initialize();
+
 
         modEventBus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.register(this);
@@ -88,6 +98,8 @@ public class WH
             MenuScreens.register(ModMenuTypes.SKAVEN_BLAST_FURNACE_MENU.get(), SkavenBlastFurnaceScreen::new);
             // ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_WARPSTONE_SLUDGE.get(), RenderType.translucent());
             // ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWIN_WARPSTONE_SLUDGE.get(), RenderType.translucent());
+
+            EntityRenderers.register(ModEntityTypes.RAT.get(), RatRenderer::new);
         }
     }
 }

@@ -15,7 +15,6 @@ import net.pravekypetr.wh.itemInit.oldWorldWeapons.Spear;
 import net.pravekypetr.wh.itemInit.oldWorldWeapons.Warhammer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Tiers;
-import net.minecraft.world.item.BowItem;
 
 public class ModWeapons {
     public static final DeferredRegister<Item> WEAPONS = DeferredRegister.create(ForgeRegistries.ITEMS, WH.MOD_ID);

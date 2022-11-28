@@ -16,16 +16,12 @@ public class BlastFurnaceRecipe implements Recipe<SimpleContainer> {
     private final ResourceLocation id;
     private final ItemStack output;
     private final Ingredient one;
-    // private final NonNullList<Ingredient> recipeItem1;
-    // private final NonNullList<Ingredient> recipeItem2;
     private final Ingredient two;
 
     public BlastFurnaceRecipe(ResourceLocation id, ItemStack output, Ingredient one, Ingredient two) {
         this.id = id;
         this.output = output;
         this.one = one;
-        // this.recipeItem1 = recipeItem1;
-        // this.recipeItem2 = recipeItem2;
         this.two = two;
     }
 
@@ -35,14 +31,8 @@ public class BlastFurnaceRecipe implements Recipe<SimpleContainer> {
             return false;
         }
 
-        // return recipeItem1.get(0).test(pContainer.getItem(1)) && recipeItem2.get(0).test(pContainer.getItem(2))/* && two.test(pContainer.getItem(2))*/;
         return one.test(pContainer.getItem(1)) && two.test(pContainer.getItem(2));
     }
-
-    // @Override
-    // public NonNullList<Ingredient> getIngredients() {
-    //     return;
-    // }
 
     @Override
     public ItemStack assemble(SimpleContainer p_44001_) {
@@ -91,16 +81,6 @@ public class BlastFurnaceRecipe implements Recipe<SimpleContainer> {
             ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(pSerializedRecipe, "output"));
 
             return new BlastFurnaceRecipe(pRecipeId, output, one, two);
-
-            // ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(pSerializedRecipe, "output"));
-
-            // JsonArray ingredient1 = GsonHelper.getAsJsonArray(pSerializedRecipe, "base");
-            // NonNullList<Ingredient> input1 = NonNullList.withSize(1, Ingredient.EMPTY);
-
-            // for (int i = 0; i < input1.size(); i++) {
-            //     input1.set(0, Ingredient.fromJson(ingredient1.get(i)));
-            // }
-            // return new BlastFurnaceRecipe(pRecipeId, output, input1);
         }
 
         @Override
@@ -109,14 +89,6 @@ public class BlastFurnaceRecipe implements Recipe<SimpleContainer> {
             Ingredient two = Ingredient.fromNetwork(buf);
             ItemStack output = buf.readItem();
             return new BlastFurnaceRecipe(pRecipeId, output, one, two);
-            // NonNullList<Ingredient> input1 = NonNullList.withSize(buf.readInt(), Ingredient.EMPTY);
-
-            // for (int i = 0; i < input1.size(); i++) {
-            //     input1.set(i, Ingredient.fromNetwork(buf));
-            // }
-
-            // ItemStack output = buf.readItem();
-            // return new BlastFurnaceRecipe(pRecipeId, output, input1);
         }
 
         @Override
@@ -124,13 +96,6 @@ public class BlastFurnaceRecipe implements Recipe<SimpleContainer> {
             recipe.one.toNetwork(buf);
             recipe.two.toNetwork(buf);
             buf.writeItem(recipe.output);
-
-            // buf.writeInt(recipe.getIngredients().size());
-
-            // for (Ingredient ing : recipe.getIngredients()) {
-            //     ing.toNetwork(buf);
-            // }
-            // buf.writeItemStack(recipe.getResultItem(), false);
         }
     }
 
